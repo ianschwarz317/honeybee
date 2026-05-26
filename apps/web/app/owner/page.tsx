@@ -198,7 +198,7 @@ export default function OwnerPortal() {
 
           <div className="space-y-3">
             {records.map((rec) => {
-              const cfg = recordTypeConfig[rec.record_type] || recordTypeConfig.note
+              const cfg = recordTypeConfig[rec.record_type] ?? recordTypeConfig["note"]!
               return (
                 <div key={rec.id} className="card p-5 hover:shadow-card-hover transition-all duration-200">
                   <div className="flex items-start gap-4">
