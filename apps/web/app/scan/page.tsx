@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import Image from 'next/image'
 import { mockPet } from '@/lib/mock-data'
@@ -5,73 +6,110 @@ import { mockPet } from '@/lib/mock-data'
 export default function ScanPage() {
   const pet = mockPet
   return (
-    <main style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+    <main style={{ minHeight: '100vh', background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
 
-      {/* Top bar */}
-      <div className="fade-up" style={{ position: 'fixed', top: 0, left: 0, right: 0, background: 'rgba(245,245,247,0.85)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)', padding: '12px 24px', display: 'flex', alignItems: 'center', gap: 10, zIndex: 100 }}>
-        <Image src="/logo.svg" alt="Honeybee" width={28} height={28} style={{ borderRadius: 6 }} />
-        <span style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>Honeybee</span>
-        <span style={{ marginLeft: 'auto', fontSize: 13, color: 'var(--text-secondary)' }}>Lost Pet Recovery</span>
+      {/* Scene label */}
+      <div style={{ marginBottom: 24, textAlign: 'center' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 16px', color: 'rgba(255,255,255,0.8)', fontSize: 13, fontWeight: 500 }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#34C759', display: 'inline-block', boxShadow: '0 0 8px #34C759' }} />
+          NFC Chip Detected — Live Scan Simulation
+        </div>
       </div>
 
-      <div style={{ marginTop: 60, maxWidth: 400, width: '100%' }}>
+      {/* Phone frame */}
+      <div style={{ position: 'relative', width: 340, filter: 'drop-shadow(0 40px 80px rgba(0,0,0,0.6))' }}>
+        {/* Phone outer shell */}
+        <div style={{ background: '#1C1C1E', borderRadius: 52, padding: 12, border: '1px solid rgba(255,255,255,0.12)', position: 'relative' }}>
+          {/* Side buttons */}
+          <div style={{ position: 'absolute', left: -3, top: 100, width: 3, height: 32, background: '#3A3A3C', borderRadius: '2px 0 0 2px' }} />
+          <div style={{ position: 'absolute', left: -3, top: 144, width: 3, height: 56, background: '#3A3A3C', borderRadius: '2px 0 0 2px' }} />
+          <div style={{ position: 'absolute', left: -3, top: 210, width: 3, height: 56, background: '#3A3A3C', borderRadius: '2px 0 0 2px' }} />
+          <div style={{ position: 'absolute', right: -3, top: 160, width: 3, height: 72, background: '#3A3A3C', borderRadius: '0 2px 2px 0' }} />
 
-        {/* Scan badge */}
-        <div className="fade-up" style={{ textAlign: 'center', marginBottom: 24 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--blue-light)', color: 'var(--blue)', borderRadius: 100, padding: '6px 14px', fontSize: 13, fontWeight: 600, marginBottom: 16 }}>
-            <span>📡</span> NFC Chip Scanned
-          </div>
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8 }}>This pet has been found!</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 15 }}>Please contact the owner using the information below.</p>
-        </div>
+          {/* Screen */}
+          <div style={{ background: '#F5F5F7', borderRadius: 42, overflow: 'hidden', minHeight: 660, position: 'relative' }}>
+            {/* Dynamic Island */}
+            <div style={{ position: 'absolute', top: 12, left: '50%', transform: 'translateX(-50%)', width: 120, height: 34, background: '#1C1C1E', borderRadius: 20, zIndex: 10 }} />
 
-        {/* Pet card */}
-        <div className="card fade-up delay-1" style={{ padding: 24, marginBottom: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-            <div style={{ width: 64, height: 64, borderRadius: 16, background: 'linear-gradient(135deg, #FFF3CD, #FFD966)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, flexShrink: 0 }}>🐕</div>
-            <div>
-              <h2 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>{pet.name}</h2>
-              <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>{pet.breed} · {pet.sex} · {pet.color}</p>
-              <span className="badge-green" style={{ marginTop: 6 }}>✓ Registered Chip</span>
+            {/* Status bar */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 28px 0', paddingTop: 56 }}>
+              <span style={{ fontSize: 15, fontWeight: 600, color: '#1D1D1F' }}>9:41</span>
+              <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                <span style={{ fontSize: 11, color: '#1D1D1F' }}>●●●</span>
+                <span style={{ fontSize: 11, color: '#1D1D1F' }}>WiFi</span>
+                <span style={{ fontSize: 11, color: '#1D1D1F' }}>🔋</span>
+              </div>
+            </div>
+
+            {/* NFC scan animation ring */}
+            <div style={{ textAlign: 'center', padding: '18px 0 12px' }}>
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#E8F8ED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, position: 'relative', zIndex: 2 }}>📡</div>
+                <div style={{ position: 'absolute', inset: -8, borderRadius: '50%', border: '2px solid rgba(52,199,89,0.3)', animation: 'ping 2s ease infinite' }} />
+              </div>
+              <div style={{ fontSize: 17, fontWeight: 700, color: '#1D1D1F', marginTop: 10, marginBottom: 2 }}>Pet Found!</div>
+              <div style={{ fontSize: 13, color: '#6E6E73' }}>Honeybee chip scanned</div>
+            </div>
+
+            {/* Content */}
+            <div style={{ padding: '0 16px 24px' }}>
+              {/* Pet card */}
+              <div style={{ background: 'white', borderRadius: 18, padding: '16px', marginBottom: 10, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 14 }}>
+                  <div style={{ width: 52, height: 52, borderRadius: 14, background: 'linear-gradient(135deg,#FFF3CD,#FFD966)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, flexShrink: 0 }}>🐕</div>
+                  <div>
+                    <div style={{ fontSize: 19, fontWeight: 700, color: '#1D1D1F' }}>{pet.name}</div>
+                    <div style={{ fontSize: 13, color: '#6E6E73' }}>{pet.breed}</div>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: '#E8F8ED', color: '#1A7F37', borderRadius: 100, padding: '2px 8px', fontSize: 11, fontWeight: 600, marginTop: 3 }}>✓ Registered</div>
+                  </div>
+                </div>
+                <div style={{ background: '#F5F5F7', borderRadius: 10, padding: '10px 12px', marginBottom: 12 }}>
+                  <div style={{ fontSize: 11, color: '#AEAEB2', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }}>Owner</div>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: '#1D1D1F' }}>{pet.owner_name}</div>
+                  <div style={{ fontSize: 13, color: '#6E6E73' }}>{pet.owner_phone}</div>
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button style={{ flex: 1, background: '#34C759', color: 'white', border: 'none', borderRadius: 12, padding: '12px', fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+                    📞 Call Now
+                  </button>
+                  <button style={{ flex: 1, background: '#0071E3', color: 'white', border: 'none', borderRadius: 12, padding: '12px', fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+                    💬 Message
+                  </button>
+                </div>
+              </div>
+
+              {/* Chip info */}
+              <div style={{ background: 'white', borderRadius: 14, padding: '12px 14px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <span style={{ fontSize: 12, color: '#AEAEB2', fontWeight: 500 }}>CHIP ID</span>
+                  <span style={{ fontSize: 12, color: '#6E6E73' }}>NFC + 134.2 kHz</span>
+                </div>
+                <div style={{ fontFamily: 'monospace', fontSize: 13, color: '#1D1D1F', letterSpacing: '0.08em' }}>985 1410 0234 5678</div>
+              </div>
+            </div>
+
+            {/* Home indicator */}
+            <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: 8 }}>
+              <div style={{ width: 120, height: 5, background: '#1D1D1F', borderRadius: 100, opacity: 0.2 }} />
             </div>
           </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 20px', padding: '16px 0', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', marginBottom: 16 }}>
-            {[
-              { label: 'Chip Number', value: pet.chip_number },
-              { label: 'Registered Clinic', value: pet.vet_clinic },
-            ].map(({ label, value }) => (
-              <div key={label} style={{ gridColumn: '1 / -1' }}>
-                <div style={{ fontSize: 12, color: 'var(--text-tertiary)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 2 }}>{label}</div>
-                <div style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 500, fontFamily: label === 'Chip Number' ? 'monospace' : 'inherit' }}>{value}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Emergency contact */}
-          <div style={{ background: 'var(--surface-2)', borderRadius: 10, padding: '14px 16px', marginBottom: 16 }}>
-            <div style={{ fontSize: 12, color: 'var(--text-tertiary)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 8 }}>Owner</div>
-            <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{pet.owner_name}</div>
-            <div style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{pet.owner_phone}</div>
-          </div>
-
-          <a href={`tel:${pet.owner_phone}`} style={{ textDecoration: 'none', display: 'block' }}>
-            <button className="btn-primary" style={{ width: '100%', fontSize: 16, padding: '14px', borderRadius: 12 }}>
-              📞 Call Owner Now
-            </button>
-          </a>
-        </div>
-
-        {/* Powered by */}
-        <div className="fade-up delay-2" style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: 13, color: 'var(--text-tertiary)', marginBottom: 8 }}>Powered by</p>
-          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
-            <Image src="/logo.svg" alt="Honeybee" width={18} height={18} style={{ borderRadius: 4 }} />
-            <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-secondary)' }}>Honeybee</span>
-          </Link>
-          <p style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 6 }}>Smart microchip platform for pet owners &amp; veterinarians</p>
         </div>
       </div>
+
+      {/* Bottom label */}
+      <div style={{ marginTop: 28, textAlign: 'center' }}>
+        <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 100, padding: '8px 16px' }}>
+          <Image src="/logo.svg" alt="Honeybee" width={18} height={18} style={{ borderRadius: 4 }} />
+          <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontWeight: 500 }}>Powered by Honeybee</span>
+        </Link>
+      </div>
+
+      <style>{`
+        @keyframes ping {
+          0% { transform: scale(1); opacity: 0.6; }
+          100% { transform: scale(2.2); opacity: 0; }
+        }
+      `}</style>
     </main>
   )
 }
