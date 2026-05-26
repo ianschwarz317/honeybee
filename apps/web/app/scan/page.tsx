@@ -38,7 +38,7 @@ export default function ScanPage() {
           if (record.recordType === 'url') {
             const url = new TextDecoder().decode(record.data)
             const match = url.match(/\/scan\/(\d{9,})/) || url.match(/chip=(\d{9,})/)
-            if (match) { chipId = match[1]; break }
+            if (match?.[1]) { chipId = match[1]; break }
           }
           if (record.recordType === 'text') {
             const text = new TextDecoder().decode(record.data).trim()
