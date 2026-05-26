@@ -240,10 +240,10 @@ export default function IntegrationsPage() {
                     {/* Sync buttons inside panel */}
                     <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
                       <button onClick={() => handleSync('chip')} style={{ flex: 1, background: syncChip === 'done' ? '#E8F8ED' : '#1D1D1F', color: syncChip === 'done' ? '#1A7F37' : 'white', border: 'none', borderRadius: 8, padding: '8px 6px', fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
-                        {syncChip === 'done' ? '✓ Synced' : syncChip === 'syncing' ? '⏳' : '📡 → Chip'}
+                        {syncChip === 'done' ? 'Synced' : syncChip === 'syncing' ? 'Syncing…' : 'Sync to Chip'}
                       </button>
                       <button onClick={() => handleSync('pims')} style={{ flex: 1, background: syncPims === 'done' ? '#E8F8ED' : '#0071E3', color: syncPims === 'done' ? '#1A7F37' : 'white', border: 'none', borderRadius: 8, padding: '8px 6px', fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
-                        {syncPims === 'done' ? '✓ Synced' : syncPims === 'syncing' ? '⏳' : '🔄 → PIMS'}
+                        {syncPims === 'done' ? 'Synced' : syncPims === 'syncing' ? 'Syncing…' : 'Sync to PIMS'}
                       </button>
                     </div>
                     <div style={{ background: 'white', borderRadius: 9, padding: 12, marginBottom: 10, border: '1px solid #EBEBEB' }}>

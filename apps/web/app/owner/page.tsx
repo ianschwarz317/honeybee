@@ -15,101 +15,12 @@ function fmtDate(d: string) { return new Date(d).toLocaleDateString('en-US', { m
 function fmtDT(d: string)   { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) }
 function age(dob: string)   { return `${new Date().getFullYear() - new Date(dob).getFullYear()} yrs` }
 
-// ---- Wallet Pass Preview ----
-function ApplePassPreview({ onClose }: { onClose: () => void }) {
-  return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={onClose}>
-      <div onClick={e => e.stopPropagation()} style={{ width: 320 }}>
-        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: 14, fontWeight: 500 }}>Apple Wallet Pass Preview</div>
-        {/* Apple Wallet pass */}
-        <div style={{ background: '#1D1D1F', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,0.5)' }}>
-          {/* Pass header strip */}
-          <div style={{ background: 'linear-gradient(135deg, #F5A623, #E8900A)', padding: '16px 20px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Image src="/logo.svg" alt="Honeybee" width={22} height={22} style={{ borderRadius: 5 }} />
-              <span style={{ color: 'white', fontWeight: 700, fontSize: 15 }}>Honeybee</span>
-            </div>
-            <span style={{ color: 'rgba(255,255,255,0.85)', fontSize: 12, fontWeight: 500 }}>PET ID</span>
-          </div>
-          {/* Pass body */}
-          <div style={{ padding: '20px 20px 24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
-              <div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Pet Name</div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>Biscuit</div>
-                <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>Golden Retriever · Male</div>
-              </div>
-              <div style={{ width: 56, height: 56, borderRadius: 14, background: 'linear-gradient(135deg,#FFF3CD,#FFD966)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>🐕</div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 20px', paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: 16 }}>
-              {[['Owner', 'John & Lisa Smith'], ['Phone', '(801) 555-0192'], ['Clinic', 'Summit Animal Hospital'], ['Chip ID', '985...678']].map(([l, v]) => (
-                <div key={l}>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>{l}</div>
-                  <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.85)', fontWeight: 500 }}>{v}</div>
-                </div>
-              ))}
-            </div>
-            {/* Barcode area */}
-            <div style={{ background: 'white', borderRadius: 10, padding: '12px', textAlign: 'center' }}>
-              <div style={{ fontFamily: 'monospace', fontSize: 11, color: '#1D1D1F', letterSpacing: '0.15em', marginBottom: 6 }}>▌▌ ▌▌▌ ▌ ▌▌▌▌ ▌ ▌▌▌ ▌▌</div>
-              <div style={{ fontFamily: 'monospace', fontSize: 11, color: '#6E6E73', letterSpacing: '0.1em' }}>985141002345678</div>
-            </div>
-          </div>
-        </div>
-        <button onClick={onClose} style={{ width: '100%', marginTop: 14, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12, padding: '12px', color: 'white', fontSize: 15, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500 }}>Close Preview</button>
-      </div>
-    </div>
-  )
-}
-
-function GooglePassPreview({ onClose }: { onClose: () => void }) {
-  return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={onClose}>
-      <div onClick={e => e.stopPropagation()} style={{ width: 320 }}>
-        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', textAlign: 'center', marginBottom: 14, fontWeight: 500 }}>Google Wallet Pass Preview</div>
-        {/* Google Wallet card */}
-        <div style={{ background: 'white', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 60px rgba(0,0,0,0.5)' }}>
-          {/* Header */}
-          <div style={{ background: 'linear-gradient(135deg, #4285F4, #1A73E8)', padding: '20px 20px 18px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Honeybee Pet ID</div>
-              <div style={{ fontSize: 24, fontWeight: 700, color: 'white' }}>Biscuit</div>
-              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 2 }}>Golden Retriever</div>
-            </div>
-            <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>🐕</div>
-          </div>
-          {/* Body */}
-          <div style={{ padding: '18px 20px 20px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 20px', marginBottom: 16 }}>
-              {[['Owner', 'John & Lisa Smith'], ['Contact', '(801) 555-0192'], ['Veterinary Clinic', 'Summit Animal Hospital'], ['Chip Status', '✓ Active']].map(([l, v]) => (
-                <div key={l}>
-                  <div style={{ fontSize: 10, color: '#AEAEB2', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 3 }}>{l}</div>
-                  <div style={{ fontSize: 13, color: '#1D1D1F', fontWeight: 500 }}>{v}</div>
-                </div>
-              ))}
-            </div>
-            <div style={{ background: '#F5F5F7', borderRadius: 10, padding: '12px', textAlign: 'center', borderTop: '1px solid #EBEBEB' }}>
-              <div style={{ fontFamily: 'monospace', fontSize: 12, color: '#1D1D1F', letterSpacing: '0.15em', marginBottom: 4 }}>▌▌ ▌▌▌ ▌ ▌▌▌▌ ▌▌▌ ▌▌</div>
-              <div style={{ fontSize: 11, color: '#6E6E73', fontFamily: 'monospace' }}>985141002345678</div>
-            </div>
-            <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 6, justifyContent: 'center' }}>
-              <Image src="/logo.svg" alt="Honeybee" width={14} height={14} style={{ borderRadius: 3 }} />
-              <span style={{ fontSize: 11, color: '#AEAEB2' }}>Powered by Honeybee · seehoneybee.com</span>
-            </div>
-          </div>
-        </div>
-        <button onClick={onClose} style={{ width: '100%', marginTop: 14, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 12, padding: '12px', color: 'white', fontSize: 15, cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500 }}>Close Preview</button>
-      </div>
-    </div>
-  )
-}
-
 // ---- Record Detail Modal ----
 function RecordModal({ record, onClose }: { record: typeof mockRecords[0]; onClose: () => void }) {
   const cfg = (typeConfig[record.type] ?? typeConfig['exam'])!
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={onClose}>
-      <div className="card" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 520, padding: '28px 28px 24px' }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={onClose}>
+      <div className="card" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 520, padding: '28px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: cfg.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{cfg.icon}</div>
@@ -118,11 +29,11 @@ function RecordModal({ record, onClose }: { record: typeof mockRecords[0]; onClo
               <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 3 }}>{fmtDate(record.date)}</div>
             </div>
           </div>
-          <button onClick={onClose} style={{ background: 'var(--surface-2)', border: 'none', borderRadius: 8, width: 30, height: 30, cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>✕</button>
+          <button onClick={onClose} style={{ background: 'var(--surface-2)', border: 'none', borderRadius: 8, width: 30, height: 30, cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>✕</button>
         </div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12, color: 'var(--text-primary)' }}>{record.title}</h2>
+        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>{record.title}</h2>
         <div style={{ background: 'var(--surface-2)', borderRadius: 10, padding: '14px 16px', marginBottom: 16 }}>
-          <div style={{ fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.65 }}>{record.content}</div>
+          <p style={{ fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.65, margin: 0 }}>{record.content}</p>
         </div>
         {Object.keys(record.meta).length > 0 && (
           <div style={{ marginBottom: 16 }}>
@@ -131,30 +42,28 @@ function RecordModal({ record, onClose }: { record: typeof mockRecords[0]; onClo
               {Object.entries(record.meta).map(([k, v]) => (
                 <div key={k}>
                   <div style={{ fontSize: 11, color: 'var(--text-tertiary)', fontWeight: 500, textTransform: 'capitalize', marginBottom: 2 }}>{k}</div>
-                  <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-primary)' }}>{String(v)}</div>
+                  <div style={{ fontSize: 14, fontWeight: 500 }}>{String(v)}</div>
                 </div>
               ))}
             </div>
           </div>
         )}
-        <div style={{ paddingTop: 14, borderTop: '1px solid var(--border)', fontSize: 13, color: 'var(--text-secondary)' }}>
-          {record.author} · Summit Animal Hospital
-        </div>
+        <div style={{ paddingTop: 14, borderTop: '1px solid var(--border)', fontSize: 13, color: 'var(--text-secondary)' }}>{record.author} · Summit Animal Hospital</div>
       </div>
     </div>
   )
 }
 
 // ---- Update Chip Modal ----
-function UpdateChipModal({ onClose }: { onClose: () => void }) {
+function UpdateChipModal({ onClose, anonymous, setAnonymous }: { onClose: () => void; anonymous: boolean; setAnonymous: (v: boolean) => void }) {
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={onClose}>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(6px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }} onClick={onClose}>
       <div className="card" onClick={e => e.stopPropagation()} style={{ width: '100%', maxWidth: 440, padding: '28px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
           <h2 style={{ fontSize: 20, fontWeight: 700 }}>Update Chip Information</h2>
-          <button onClick={onClose} style={{ background: 'var(--surface-2)', border: 'none', borderRadius: 8, width: 30, height: 30, cursor: 'pointer', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>✕</button>
+          <button onClick={onClose} style={{ background: 'var(--surface-2)', border: 'none', borderRadius: 8, width: 30, height: 30, cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>✕</button>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {[
             { label: 'Emergency Contact Name', value: 'John & Lisa Smith', type: 'text' },
             { label: 'Emergency Phone', value: '(801) 555-0192', type: 'tel' },
@@ -166,35 +75,120 @@ function UpdateChipModal({ onClose }: { onClose: () => void }) {
               <input defaultValue={value} type={type} style={{ width: '100%', border: '1px solid var(--border-strong)', borderRadius: 9, padding: '10px 12px', fontSize: 15, fontFamily: 'inherit', background: 'var(--surface)', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box' }} />
             </div>
           ))}
-          <div>
-            <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', display: 'block', marginBottom: 6 }}>Show address on scan page</label>
-            <div style={{ display: 'flex', gap: 10 }}>
-              {['Yes', 'No'].map((v, i) => (
-                <button key={v} style={{ flex: 1, border: `1px solid ${i === 1 ? 'var(--blue)' : 'var(--border-strong)'}`, borderRadius: 9, padding: '10px', fontSize: 14, background: i === 1 ? 'var(--blue-light)' : 'var(--surface)', color: i === 1 ? 'var(--blue)' : 'var(--text-primary)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: i === 1 ? 600 : 400 }}>{v}</button>
-              ))}
+
+          {/* Anonymize toggle */}
+          <div style={{ background: 'var(--surface-2)', borderRadius: 12, padding: '14px 16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>Anonymize personal info on scan</div>
+                <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4 }}>When on, only pet name and breed are shown to strangers. Contact info is hidden.</div>
+              </div>
+              <button
+                onClick={() => setAnonymous(!anonymous)}
+                style={{ flexShrink: 0, marginLeft: 16, width: 50, height: 28, borderRadius: 14, border: 'none', cursor: 'pointer', background: anonymous ? 'var(--blue)' : '#D1D1D6', position: 'relative', transition: 'background 0.2s' }}
+              >
+                <div style={{ position: 'absolute', top: 3, left: anonymous ? 24 : 3, width: 22, height: 22, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+              </button>
+            </div>
+            <div style={{ fontSize: 12, fontWeight: 500, color: anonymous ? 'var(--blue)' : 'var(--text-tertiary)', marginTop: 6 }}>
+              {anonymous ? 'ℹ️ Personal info hidden from public scans' : 'Personal info visible on public scans'}
             </div>
           </div>
-          <button className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '13px', marginTop: 4 }}>Save Changes</button>
+
+          <button className="btn-primary" style={{ width: '100%', fontSize: 15, padding: '13px', borderRadius: 10 }}>Save Changes</button>
         </div>
       </div>
     </div>
   )
 }
 
+// ---- Realistic Apple Wallet Pass ----
+function AppleWalletPass() {
+  return (
+    <div style={{
+      background: 'linear-gradient(160deg, #1C1C1E 0%, #2C2C2E 100%)',
+      borderRadius: 16,
+      overflow: 'hidden',
+      width: '100%',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12)',
+      border: '0.5px solid rgba(255,255,255,0.12)',
+    }}>
+      {/* Pass header */}
+      <div style={{ padding: '12px 16px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '0.5px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <Image src="/logo.svg" alt="Honeybee" width={22} height={22} style={{ borderRadius: 5 }} />
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.01em' }}>Honeybee</span>
+        </div>
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Pet ID</span>
+      </div>
+
+      {/* Primary content */}
+      <div style={{ padding: '14px 16px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+          <div>
+            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 3 }}>Name</div>
+            <div style={{ fontSize: 26, fontWeight: 700, color: 'white', letterSpacing: '-0.03em', lineHeight: 1 }}>Biscuit</div>
+          </div>
+          <div style={{ width: 48, height: 48, borderRadius: 12, background: 'linear-gradient(135deg, rgba(255,243,205,0.15), rgba(255,217,102,0.15))', border: '0.5px solid rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>🐕</div>
+        </div>
+
+        {/* Secondary fields */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0 12px', marginBottom: 14 }}>
+          {[
+            { label: 'Breed', value: 'Golden Retriever' },
+            { label: 'Owner', value: 'J. Smith' },
+            { label: 'Clinic', value: 'Summit AH' },
+          ].map(({ label, value }) => (
+            <div key={label}>
+              <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>{label}</div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div style={{ height: '0.5px', background: 'rgba(255,255,255,0.1)', marginBottom: 14 }} />
+
+        {/* Chip + emergency */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px', marginBottom: 14 }}>
+          {[
+            { label: 'Chip ID', value: '985141002345678' },
+            { label: 'Emergency', value: '(801) 555-0192' },
+          ].map(({ label, value }) => (
+            <div key={label}>
+              <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>{label}</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontFamily: label === 'Chip ID' ? 'monospace' : 'inherit', fontWeight: 500 }}>{value}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Barcode strip */}
+      <div style={{ background: 'rgba(0,0,0,0.3)', padding: '12px 16px 14px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+        {/* Stylized barcode */}
+        <div style={{ display: 'flex', gap: '1.5px', height: 32, alignItems: 'flex-end' }}>
+          {[2,1,3,1,2,1,1,3,2,1,2,3,1,2,1,3,1,1,2,1,3,1,2,1,2,3,1,2,1,3,1,1,2].map((h, i) => (
+            <div key={i} style={{ width: h === 1 ? 1.5 : h === 2 ? 2.5 : 1, height: `${60 + (i % 3) * 15}%`, background: 'rgba(255,255,255,0.85)', borderRadius: 0.5 }} />
+          ))}
+        </div>
+        <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em' }}>985141002345678</div>
+      </div>
+    </div>
+  )
+}
+
 export default function OwnerPortal() {
-  const [walletModal, setWalletModal] = useState<null | 'apple' | 'google'>(null)
   const [selectedRecord, setSelectedRecord] = useState<typeof mockRecords[0] | null>(null)
   const [showUpdateChip, setShowUpdateChip] = useState(false)
+  const [anonymous, setAnonymous] = useState(false)
   const pet = mockPet
   const cfgFn = (t: string) => (typeConfig[t] ?? typeConfig['exam'])!
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-      {/* Modals */}
-      {walletModal === 'apple' && <ApplePassPreview onClose={() => setWalletModal(null)} />}
-      {walletModal === 'google' && <GooglePassPreview onClose={() => setWalletModal(null)} />}
       {selectedRecord && <RecordModal record={selectedRecord} onClose={() => setSelectedRecord(null)} />}
-      {showUpdateChip && <UpdateChipModal onClose={() => setShowUpdateChip(false)} />}
+      {showUpdateChip && <UpdateChipModal onClose={() => setShowUpdateChip(false)} anonymous={anonymous} setAnonymous={setAnonymous} />}
 
       {/* Nav */}
       <nav style={{ position: 'sticky', top: 0, zIndex: 50, background: 'rgba(245,245,247,0.88)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)', padding: '0 24px', height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -255,27 +249,49 @@ export default function OwnerPortal() {
               </div>
               <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', position: 'relative' }}>NFC + 134.2 kHz · ISO 11784/5</div>
             </div>
+
             {[['NFC UID', pet.nfc_uid], ['Emergency Contact', pet.owner_phone]].map(([l, v]) => (
               <div key={l} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                 <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{l}</span>
                 <span style={{ fontSize: 13, fontWeight: 500, fontFamily: l === 'NFC UID' ? 'monospace' : 'inherit' }}>{v}</span>
               </div>
             ))}
-            <button onClick={() => setShowUpdateChip(true)} style={{ width: '100%', marginTop: 10, border: '1px solid var(--border-strong)', borderRadius: 9, padding: '9px', fontSize: 13, background: 'var(--surface)', color: 'var(--text-primary)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500 }}>
+
+            {/* Anonymize toggle */}
+            <div style={{ background: 'var(--surface-2)', borderRadius: 9, padding: '10px 12px', marginTop: 10, marginBottom: 10 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 1 }}>Anonymize on scan</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>Hide personal info from public</div>
+                </div>
+                <button
+                  onClick={() => setAnonymous(!anonymous)}
+                  style={{ width: 44, height: 26, borderRadius: 13, border: 'none', cursor: 'pointer', background: anonymous ? 'var(--blue)' : '#D1D1D6', position: 'relative', transition: 'background 0.2s', flexShrink: 0, marginLeft: 12 }}
+                >
+                  <div style={{ position: 'absolute', top: 3, left: anonymous ? 20 : 3, width: 20, height: 20, borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
+                </button>
+              </div>
+            </div>
+
+            <button onClick={() => setShowUpdateChip(true)} style={{ width: '100%', border: '1px solid var(--border-strong)', borderRadius: 9, padding: '9px', fontSize: 13, background: 'var(--surface)', color: 'var(--text-primary)', cursor: 'pointer', fontFamily: 'inherit', fontWeight: 500 }}>
               ✏️ Update Information
             </button>
           </div>
 
-          {/* Right column */}
+          {/* Right column: wallet pass + scan log */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {/* Wallet passes */}
-            <div className="card" style={{ padding: 18 }}>
+            {/* Wallet pass - shown inline */}
+            <div className="card" style={{ padding: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 12 }}>Digital ID Pass</div>
-              <div style={{ marginBottom: 8, cursor: 'pointer' }} onClick={() => setWalletModal('apple')}>
-                <Image src="/apple-wallet.png" alt="Add to Apple Wallet" width={280} height={84} style={{ width: '100%', height: 'auto', borderRadius: 8 }} />
-              </div>
-              <div style={{ cursor: 'pointer' }} onClick={() => setWalletModal('google')}>
-                <Image src="/google-wallet.png" alt="Add to Google Wallet" width={280} height={84} style={{ width: '100%', height: 'auto', borderRadius: 8 }} />
+              <AppleWalletPass />
+              {/* Official wallet buttons - transparent containers */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
+                <div style={{ cursor: 'pointer', display: 'block' }}>
+                  <Image src="/apple-wallet.png" alt="Add to Apple Wallet" width={280} height={84} style={{ width: '100%', height: 'auto', borderRadius: 8, display: 'block' }} />
+                </div>
+                <div style={{ cursor: 'pointer', display: 'block' }}>
+                  <Image src="/google-wallet.png" alt="Add to Google Wallet" width={280} height={84} style={{ width: '100%', height: 'auto', borderRadius: 8, display: 'block' }} />
+                </div>
               </div>
             </div>
 
@@ -305,7 +321,7 @@ export default function OwnerPortal() {
               <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Generated from {mockRecords.length} records · May 2026</div>
             </div>
           </div>
-          <p style={{ fontSize: 14, lineHeight: 1.65, color: 'var(--text-primary)', whiteSpace: 'pre-line' }}>{mockSummary}</p>
+          <p style={{ fontSize: 14, lineHeight: 1.65, color: 'var(--text-primary)', whiteSpace: 'pre-line', margin: 0 }}>{mockSummary}</p>
         </div>
 
         {/* Records */}
