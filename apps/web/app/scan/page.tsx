@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { mockPet } from '@/lib/mock-data'
 
 // Realistic iOS screen content - looks like Safari on iPhone
-function iOSScreen({ pet }: { pet: typeof mockPet }) {
+function IOSScreen({ pet }: { pet: typeof mockPet }) {
   return (
     <div style={{ background: '#F2F2F7', minHeight: '100%', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif' }}>
 
@@ -169,7 +169,7 @@ export default function ScanPage() {
             </div>
 
             {/* iOS page content */}
-            <iOSScreen pet={pet} />
+            <IOSScreen pet={pet} />
           </div>
         </div>
 
