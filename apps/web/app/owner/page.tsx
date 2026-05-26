@@ -38,7 +38,7 @@ function RecordModal({ record, onClose }: { record: typeof mockRecords[0]; onClo
         {Object.keys(record.meta).length > 0 && (
           <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px 20px',marginBottom:16 }}>
             {Object.entries(record.meta).map(([k,v]) => (
-              <div key={k}><div style={{ fontSize:11,color:'#AEAEB2',fontWeight:500,textTransform:'capitalize',marginBottom:2 }}>{k}</div><div style={{ fontSize:14,fontWeight:500 }}>{String(v)}</div></div>
+              <div key={k}><div style={{ fontSize:11,color:'#AEAEB2',fontWeight:500,textTransform:'capitalize',marginBottom:2 }}>{k}</div><div style={{ fontSize:15,fontWeight:500 }}>{String(v)}</div></div>
             ))}
           </div>
         )}
@@ -183,9 +183,9 @@ function AppleWalletView() {
       {/* Wallet buttons — transparent background, just the official badges */}
       <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
         <Image src="/apple-wallet.png" alt="Add to Apple Wallet" width={600} height={180}
-          style={{ width:'100%', height:'auto', borderRadius:10, display:'block', cursor:'pointer' }} />
+          style={{ width:'75%', height:'auto', borderRadius:10, display:'block', cursor:'pointer', margin:'0 auto' }} />
         <Image src="/google-wallet.png" alt="Add to Google Wallet" width={600} height={180}
-          style={{ width:'100%', height:'auto', borderRadius:10, display:'block', cursor:'pointer' }} />
+          style={{ width:'75%', height:'auto', borderRadius:10, display:'block', cursor:'pointer', margin:'0 auto' }} />
       </div>
     </div>
   )
@@ -221,7 +221,7 @@ export default function OwnerPortal() {
       <nav style={{ position:'sticky',top:0,zIndex:50,background:'rgba(245,245,247,0.88)',backdropFilter:'blur(20px)',borderBottom:'1px solid rgba(0,0,0,0.08)',padding:'0 20px',height:52,display:'flex',alignItems:'center',justifyContent:'space-between' }}>
         <Link href="/" style={{ display:'flex',alignItems:'center',gap:8,textDecoration:'none' }}>
           <Image src="/logo.svg" alt="Honeybee" width={26} height={26} style={{ borderRadius:6 }} />
-          <span style={{ fontWeight:600,fontSize:15,color:'#1D1D1F' }}>Honeybee</span>
+          <span style={{ fontWeight:600,fontSize:16,color:'#1D1D1F' }}>Honeybee</span>
         </Link>
         <div style={{ display:'flex',alignItems:'center',gap:10 }}>
           <span style={{ fontSize:14,color:'#6E6E73' }}>John Smith</span>
@@ -230,7 +230,7 @@ export default function OwnerPortal() {
       </nav>
 
       <main style={{ maxWidth:1100,margin:'0 auto',padding:'20px 16px 40px' }}>
-        <h1 style={{ fontSize:26,fontWeight:700,marginBottom:16,letterSpacing:'-0.02em' }}>My Pets</h1>
+        <h1 style={{ fontSize:30,fontWeight:700,marginBottom:16,letterSpacing:'-0.02em' }}>My Pets</h1>
 
         {/* Two-column: left = info, right = wallet pass */}
         <div className="owner-grid" style={{ marginBottom:14 }}>
@@ -243,19 +243,19 @@ export default function OwnerPortal() {
               <div style={{ display:'flex',gap:14,alignItems:'center',marginBottom:16 }}>
                 <div style={{ width:52,height:52,borderRadius:13,background:'linear-gradient(135deg,#FFF3CD,#FFD966)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,flexShrink:0 }}>🐕</div>
                 <div>
-                  <h2 style={{ fontSize:20,fontWeight:700,marginBottom:2 }}>{pet.name}</h2>
-                  <p style={{ fontSize:13,color:'#6E6E73',marginBottom:5 }}>{pet.breed}</p>
+                  <h2 style={{ fontSize:22,fontWeight:700,marginBottom:2 }}>{pet.name}</h2>
+                  <p style={{ fontSize:14,color:'#6E6E73',marginBottom:5 }}>{pet.breed}</p>
                   <span style={{ display:'inline-flex',alignItems:'center',gap:4,background:'#E8F8ED',color:'#1A7F37',borderRadius:100,padding:'2px 8px',fontSize:12,fontWeight:600 }}>✓ Chip registered</span>
                 </div>
               </div>
               <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px 0',paddingTop:14,borderTop:'1px solid #F2F2F7' }}>
                 {[['Age',age(pet.date_of_birth)],['Weight',`${pet.weight_kg} kg`],['Sex',pet.sex],['Color',pet.color]].map(([l,v])=>(
-                  <div key={l}><div style={{ fontSize:11,color:'#AEAEB2',fontWeight:500,textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:2 }}>{l}</div><div style={{ fontSize:14,fontWeight:500 }}>{v}</div></div>
+                  <div key={l}><div style={{ fontSize:12,color:'#AEAEB2',fontWeight:500,textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:2 }}>{l}</div><div style={{ fontSize:15,fontWeight:500 }}>{v}</div></div>
                 ))}
               </div>
               <div style={{ marginTop:12,paddingTop:12,borderTop:'1px solid #F2F2F7' }}>
-                <div style={{ fontSize:11,color:'#AEAEB2',fontWeight:500,textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:2 }}>Veterinary Clinic</div>
-                <div style={{ fontSize:14,fontWeight:500 }}>{pet.vet_clinic}</div>
+                <div style={{ fontSize:12,color:'#AEAEB2',fontWeight:500,textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:2 }}>Veterinary Clinic</div>
+                <div style={{ fontSize:15,fontWeight:500 }}>{pet.vet_clinic}</div>
               </div>
             </div>
 
@@ -273,13 +273,13 @@ export default function OwnerPortal() {
                     <Image src="/logo.svg" alt="" width={16} height={16} style={{ borderRadius:3 }} />
                     <span style={{ color:'rgba(255,255,255,0.55)',fontSize:11,fontWeight:600 }}>Honeybee</span>
                   </div>
-                  <div style={{ fontFamily:'monospace',color:'white',fontSize:12,letterSpacing:'0.1em',marginBottom:6,position:'relative' }}>{pet.chip_number.replace(/(\d{3})(\d{4})(\d{4})(\d{4})/,'$1 $2 $3 $4')}</div>
+                  <div style={{ fontFamily:'monospace',color:'white',fontSize:13,letterSpacing:'0.1em',marginBottom:6,position:'relative' }}>{pet.chip_number.replace(/(\d{3})(\d{4})(\d{4})(\d{4})/,'$1 $2 $3 $4')}</div>
                   <div style={{ fontSize:10,color:'rgba(255,255,255,0.35)',position:'relative' }}>NFC + 134.2 kHz · ISO 11784/5</div>
                 </div>
                 {[['NFC UID',pet.nfc_uid],['Emergency',pet.owner_phone]].map(([l,v])=>(
                   <div key={l} style={{ display:'flex',justifyContent:'space-between',marginBottom:7 }}>
                     <span style={{ fontSize:13,color:'#6E6E73' }}>{l}</span>
-                    <span style={{ fontSize:12,fontWeight:500,fontFamily:l==='NFC UID'?'monospace':'inherit' }}>{v}</span>
+                    <span style={{ fontSize:13,fontWeight:500,fontFamily:l==='NFC UID'?'monospace':'inherit' }}>{v}</span>
                   </div>
                 ))}
                 {/* Anonymize toggle */}
@@ -314,7 +314,7 @@ export default function OwnerPortal() {
                 <div style={{ width:30,height:30,borderRadius:8,background:'#FFF3E0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:15 }}>✨</div>
                 <div><div style={{ fontSize:15,fontWeight:600 }}>AI Health Summary</div><div style={{ fontSize:12,color:'#6E6E73' }}>Generated from {mockRecords.length} records · May 2026</div></div>
               </div>
-              <p style={{ fontSize:14,lineHeight:1.65,color:'#1D1D1F',whiteSpace:'pre-line',margin:0 }}>{mockSummary}</p>
+              <p style={{ fontSize:15,lineHeight:1.65,color:'#1D1D1F',whiteSpace:'pre-line',margin:0 }}>{mockSummary}</p>
             </div>
 
             {/* Medical records */}
@@ -331,14 +331,14 @@ export default function OwnerPortal() {
                       <div style={{ width:34,height:34,borderRadius:9,background:cfg.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,flexShrink:0 }}>{cfg.icon}</div>
                       <div style={{ flex:1,minWidth:0 }}>
                         <div style={{ display:'flex',alignItems:'center',gap:7,marginBottom:3,flexWrap:'wrap' }}>
-                          <span style={{ fontSize:11,fontWeight:600,color:cfg.color,background:cfg.bg,borderRadius:100,padding:'2px 7px' }}>{cfg.label}</span>
+                          <span style={{ fontSize:12,fontWeight:600,color:cfg.color,background:cfg.bg,borderRadius:100,padding:'2px 8px' }}>{cfg.label}</span>
                           <span style={{ fontSize:12,color:'#6E6E73' }}>{fmtDate(rec.date)}</span>
                         </div>
-                        <div style={{ fontSize:14,fontWeight:600,marginBottom:3 }}>{rec.title}</div>
-                        <div style={{ fontSize:13,color:'#6E6E73',lineHeight:1.5 }}>{rec.content}</div>
-                        <div style={{ fontSize:11,color:'#AEAEB2',marginTop:5 }}>{rec.author}</div>
+                        <div style={{ fontSize:15,fontWeight:600,marginBottom:3 }}>{rec.title}</div>
+                        <div style={{ fontSize:14,color:'#6E6E73',lineHeight:1.5 }}>{rec.content}</div>
+                        <div style={{ fontSize:12,color:'#AEAEB2',marginTop:5 }}>{rec.author}</div>
                       </div>
-                      <button onClick={()=>setSelectedRecord(rec)} style={{ flexShrink:0,border:'1px solid #D1D1D6',borderRadius:8,padding:'5px 12px',fontSize:13,background:'white',color:'#1D1D1F',cursor:'pointer',fontFamily:'inherit',fontWeight:500,whiteSpace:'nowrap' }}>View →</button>
+                      <button onClick={()=>setSelectedRecord(rec)} style={{ flexShrink:0,border:'1px solid #D1D1D6',borderRadius:8,padding:'5px 12px',fontSize:14,background:'white',color:'#1D1D1F',cursor:'pointer',fontFamily:'inherit',fontWeight:500,whiteSpace:'nowrap' }}>View →</button>
                     </div>
                   )
                 })}
