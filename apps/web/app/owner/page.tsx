@@ -102,77 +102,91 @@ function UpdateChipModal({ onClose, anonymous, setAnonymous }: { onClose: () => 
   )
 }
 
-// ---- Realistic Apple Wallet Pass ----
-function AppleWalletPass() {
+// ---- Pet Health Pass (matches example design) ----
+function PetHealthPass() {
+  const vaccines = [
+    { icon: '🛡️', color: '#2D6A4F', bg: '#D8F3DC', label: 'RABIES VACCINE CONFIRMED', status: 'Good Through', detail: '04/22/2029', check: '#2D6A4F' },
+    { icon: '📋', color: '#1D3557', bg: '#E0F0FF', label: 'HEALTH CERTIFICATE', status: 'Valid', detail: '', check: '#1D3557' },
+    { icon: '🐾', color: '#5A189A', bg: '#EDE7F6', label: 'BORDATELLA VACCINE', status: 'Up to Date', detail: '', check: '#5A189A' },
+    { icon: '🐾', color: '#E65100', bg: '#FFF3E0', label: 'DHPP VACCINATION', status: 'Up to Date', detail: '', check: '#E65100' },
+  ]
   return (
-    <div style={{
-      background: 'linear-gradient(160deg, #1C1C1E 0%, #2C2C2E 100%)',
-      borderRadius: 16,
-      overflow: 'hidden',
-      width: '100%',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12)',
-      border: '0.5px solid rgba(255,255,255,0.12)',
-    }}>
-      {/* Pass header */}
-      <div style={{ padding: '12px 16px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '0.5px solid rgba(255,255,255,0.08)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-          <Image src="/logo.svg" alt="Honeybee" width={22} height={22} style={{ borderRadius: 5 }} />
-          <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.01em' }}>Honeybee</span>
-        </div>
-        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Pet ID</span>
-      </div>
-
-      {/* Primary content */}
-      <div style={{ padding: '14px 16px 0' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+    <div style={{ background: 'linear-gradient(160deg, #FFFBEE 0%, #FFF3C4 100%)', borderRadius: 16, overflow: 'hidden', border: '1px solid #F5D87A', fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+      {/* Header */}
+      <div style={{ padding: '14px 16px 10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Image src="/logo.svg" alt="Honeybee" width={24} height={24} style={{ borderRadius: 6 }} />
           <div>
-            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 3 }}>Name</div>
-            <div style={{ fontSize: 26, fontWeight: 700, color: 'white', letterSpacing: '-0.03em', lineHeight: 1 }}>Biscuit</div>
+            <div style={{ fontSize: 13, fontWeight: 800, color: '#2D4A1E', letterSpacing: '0.04em', lineHeight: 1.1 }}>HONEYBEE</div>
+            <div style={{ fontSize: 10, color: '#6B8C3E', fontWeight: 500 }}>Pet Health Pass</div>
           </div>
-          <div style={{ width: 48, height: 48, borderRadius: 12, background: 'linear-gradient(135deg, rgba(255,243,205,0.15), rgba(255,217,102,0.15))', border: '0.5px solid rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>🐕</div>
         </div>
-
-        {/* Secondary fields */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0 12px', marginBottom: 14 }}>
-          {[
-            { label: 'Breed', value: 'Golden Retriever' },
-            { label: 'Owner', value: 'J. Smith' },
-            { label: 'Clinic', value: 'Summit AH' },
-          ].map(({ label, value }) => (
-            <div key={label}>
-              <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>{label}</div>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{value}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Divider */}
-        <div style={{ height: '0.5px', background: 'rgba(255,255,255,0.1)', marginBottom: 14 }} />
-
-        {/* Chip + emergency */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 12px', marginBottom: 14 }}>
-          {[
-            { label: 'Chip ID', value: '985141002345678' },
-            { label: 'Emergency', value: '(801) 555-0192' },
-          ].map(({ label, value }) => (
-            <div key={label}>
-              <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 2 }}>{label}</div>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontFamily: label === 'Chip ID' ? 'monospace' : 'inherit', fontWeight: 500 }}>{value}</div>
-            </div>
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(45,106,79,0.1)', borderRadius: 100, padding: '4px 10px', border: '1px solid rgba(45,106,79,0.2)' }}>
+          <div style={{ fontSize: 11, color: '#2D6A4F' }}>🛡️</div>
+          <span style={{ fontSize: 11, color: '#2D6A4F', fontWeight: 600 }}>Vet Verified</span>
         </div>
       </div>
 
-      {/* Barcode strip */}
-      <div style={{ background: 'rgba(0,0,0,0.3)', padding: '12px 16px 14px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-        {/* Stylized barcode */}
-        <div style={{ display: 'flex', gap: '1.5px', height: 32, alignItems: 'flex-end' }}>
-          {[2,1,3,1,2,1,1,3,2,1,2,3,1,2,1,3,1,1,2,1,3,1,2,1,2,3,1,2,1,3,1,1,2].map((h, i) => (
-            <div key={i} style={{ width: h === 1 ? 1.5 : h === 2 ? 2.5 : 1, height: `${60 + (i % 3) * 15}%`, background: 'rgba(255,255,255,0.85)', borderRadius: 0.5 }} />
-          ))}
+      {/* Pet info */}
+      <div style={{ padding: '6px 16px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <div style={{ fontSize: 10, color: '#8B7355', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 2 }}>Pet Name</div>
+          <div style={{ fontSize: 26, fontWeight: 700, color: '#2D4A1E', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: 8 }}>Biscuit</div>
+          <div style={{ fontSize: 10, color: '#8B7355', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 2 }}>Pet Age</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#2D4A1E' }}>6 years</div>
         </div>
-        <div style={{ fontFamily: 'monospace', fontSize: 9, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em' }}>985141002345678</div>
+        <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg, #FFF3CD, #FFD966)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 34, border: '3px solid white', boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>🐕</div>
+      </div>
+
+      {/* Vaccine records */}
+      <div style={{ padding: '0 12px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {vaccines.map(({ icon, color, bg, label, status, detail, check }) => (
+          <div key={label} style={{ background: 'white', borderRadius: 12, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 34, height: 34, borderRadius: 9, background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>{icon}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#1C1C1E', letterSpacing: '0.02em' }}>{label}</div>
+              <div style={{ fontSize: 11, color, fontWeight: 600, marginTop: 1 }}>{status}{detail ? ` ${detail}` : ''}</div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div style={{ width: 20, height: 20, borderRadius: '50%', background: check, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: 9, height: 6, borderLeft: '1.5px solid white', borderBottom: '1.5px solid white', transform: 'rotate(-45deg) translate(0.5px,-0.5px)' }} />
+              </div>
+              <span style={{ fontSize: 11, color: '#8E8E93' }}>Details ›</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* QR code area */}
+      <div style={{ padding: '10px 16px 14px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ background: 'white', borderRadius: 10, padding: '10px', display: 'inline-block', boxShadow: '0 1px 4px rgba(0,0,0,0.1)' }}>
+          {/* SVG QR-like pattern */}
+          <svg width="70" height="70" viewBox="0 0 70 70" style={{ display: 'block' }}>
+            <rect width="70" height="70" fill="white"/>
+            {/* Corner squares */}
+            <rect x="2" y="2" width="20" height="20" fill="#1C1C1E"/><rect x="4" y="4" width="16" height="16" fill="white"/><rect x="6" y="6" width="12" height="12" fill="#1C1C1E"/>
+            <rect x="48" y="2" width="20" height="20" fill="#1C1C1E"/><rect x="50" y="4" width="16" height="16" fill="white"/><rect x="52" y="6" width="12" height="12" fill="#1C1C1E"/>
+            <rect x="2" y="48" width="20" height="20" fill="#1C1C1E"/><rect x="4" y="50" width="16" height="16" fill="white"/><rect x="6" y="52" width="12" height="12" fill="#1C1C1E"/>
+            {/* Data cells */}
+            <rect x="24" y="2" width="4" height="4" fill="#1C1C1E"/><rect x="30" y="2" width="4" height="4" fill="#1C1C1E"/><rect x="36" y="2" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="24" y="8" width="4" height="4" fill="#1C1C1E"/><rect x="36" y="8" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="24" y="14" width="4" height="4" fill="#1C1C1E"/><rect x="30" y="14" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="2" y="24" width="4" height="4" fill="#1C1C1E"/><rect x="8" y="24" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="2" y="30" width="4" height="4" fill="#1C1C1E"/><rect x="14" y="30" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="2" y="36" width="4" height="4" fill="#1C1C1E"/><rect x="8" y="36" width="4" height="4" fill="#1C1C1E"/><rect x="20" y="36" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="2" y="42" width="4" height="4" fill="#1C1C1E"/><rect x="14" y="42" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="24" y="24" width="22" height="22" fill="#F5A623"/><rect x="28" y="28" width="14" height="14" fill="white"/><rect x="30" y="30" width="10" height="10" fill="#F5A623"/>
+            <rect x="48" y="24" width="4" height="4" fill="#1C1C1E"/><rect x="54" y="24" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="48" y="30" width="4" height="4" fill="#1C1C1E"/><rect x="60" y="30" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="48" y="36" width="4" height="4" fill="#1C1C1E"/><rect x="54" y="36" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="24" y="48" width="4" height="4" fill="#1C1C1E"/><rect x="30" y="48" width="4" height="4" fill="#1C1C1E"/><rect x="36" y="48" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="24" y="54" width="4" height="4" fill="#1C1C1E"/><rect x="42" y="54" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="24" y="60" width="4" height="4" fill="#1C1C1E"/><rect x="30" y="60" width="4" height="4" fill="#1C1C1E"/><rect x="42" y="60" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="48" y="48" width="4" height="4" fill="#1C1C1E"/><rect x="60" y="48" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="54" y="54" width="4" height="4" fill="#1C1C1E"/><rect x="60" y="54" width="4" height="4" fill="#1C1C1E"/>
+            <rect x="48" y="60" width="4" height="4" fill="#1C1C1E"/><rect x="54" y="60" width="4" height="4" fill="#1C1C1E"/>
+          </svg>
+        </div>
       </div>
     </div>
   )
@@ -202,14 +216,14 @@ export default function OwnerPortal() {
         </div>
       </nav>
 
-      <main style={{ maxWidth: 960, margin: '0 auto', padding: '32px 24px' }}>
+      <main style={{ maxWidth: 960, margin: '0 auto', padding: '20px 24px' }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 24 }}>My Pets</h1>
 
         {/* Top cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, marginBottom: 14 }}>
 
           {/* Pet profile */}
-          <div className="card" style={{ padding: 20 }}>
+          <div className="card" style={{ padding: 14 }}>
             <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 18 }}>
               <div style={{ width: 56, height: 56, borderRadius: 14, background: 'linear-gradient(135deg,#FFF3CD,#FFD966)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, flexShrink: 0 }}>🐕</div>
               <div>
@@ -233,7 +247,7 @@ export default function OwnerPortal() {
           </div>
 
           {/* Chip card */}
-          <div className="card" style={{ padding: 20 }}>
+          <div className="card" style={{ padding: 16 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
               <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Microchip</span>
               <span className="badge-green">● Active</span>
@@ -283,7 +297,7 @@ export default function OwnerPortal() {
             {/* Wallet pass - shown inline */}
             <div className="card" style={{ padding: 16 }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 12 }}>Digital ID Pass</div>
-              <AppleWalletPass />
+              <PetHealthPass />
               {/* Official wallet buttons - transparent containers */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 }}>
                 <div style={{ cursor: 'pointer', display: 'block' }}>
