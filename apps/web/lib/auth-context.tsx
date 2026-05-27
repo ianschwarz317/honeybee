@@ -30,7 +30,7 @@ async function fetchProfile(userId: string): Promise<AuthUser | null> {
     .select('id, email, role, full_name, organization_id')
     .eq('id', userId)
     .limit(1)
-  if (error || !data || data.length === 0) return null
+  if (error || !data || data.length === 0 || !data[0]) return null
   const row = data[0]
   return {
     id: row.id,
