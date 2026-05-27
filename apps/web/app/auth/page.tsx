@@ -26,14 +26,18 @@ export default function AuthPage() {
     clearError()
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSubmitting(true)
     try {
       if (screen === 'login') {
         await signIn(email, password)
+        const dest = selectedRole === 'clinic_admin' ? '/clinic' : '/owner'
+        router.replace(dest)
       } else {
         await signUp(email, password, selectedRole, fullName)
+        const dest = selectedRole === 'clinic_admin' ? '/clinic' : '/owner'
+        router.replace(dest)
       }
     } catch {
       // error already set in context
