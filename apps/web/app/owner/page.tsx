@@ -176,19 +176,28 @@ export default function OwnerPortal() {
 
   useEffect(() => {
     if (!user) return
-    async function load() {
+  async function load() {
       setDataLoading(true)
-      const { data: petData } = await supabase
-        .from('pets')
-        .select('*, chips(*)')
-        .eq('owner_id', user!.id)
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single()
-      if (petData) {
+      try {
+        const { data: petData, error: petError } = await supabase
+          .from('pets')
+          .select('*')
+          .eq('owner_id', user!.id)
+          .eq('is_active', true)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single()
+        if (petError || !petData) { setDataLoading(false); return }
         setPet(petData)
-        setChip(petData.chips?.[0] ?? null)
+
+        const { data: chipData } = await supabase
+          .from('chips')
+          .select('*')
+          .eq('pet_id', petData.id)
+          .limit(1)
+          .single()
+        setChip(chipData ?? null)
+
         const { data: recs } = await supabase
           .from('medical_records')
           .select('*')
@@ -196,17 +205,21 @@ export default function OwnerPortal() {
           .eq('is_visible_to_owner', true)
           .order('record_date', { ascending: false })
         setRecords(recs ?? [])
-        if (petData.chips?.[0]?.id) {
+
+        if (chipData?.id) {
           const { data: scanData } = await supabase
             .from('scan_logs')
             .select('*')
-            .eq('chip_id', petData.chips[0].id)
+            .eq('chip_id', chipData.id)
             .order('scanned_at', { ascending: false })
             .limit(5)
           setScans(scanData ?? [])
         }
+      } catch (err) {
+        console.error('Load error:', err)
+      } finally {
+        setDataLoading(false)
       }
-      setDataLoading(false)
     }
     load()
   }, [user])
