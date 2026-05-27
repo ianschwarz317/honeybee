@@ -29,14 +29,15 @@ async function fetchProfile(userId: string): Promise<AuthUser | null> {
     .from('profiles')
     .select('id, email, role, full_name, organization_id')
     .eq('id', userId)
-    .single()
-  if (error || !data) return null
+    .limit(1)
+  if (error || !data || data.length === 0) return null
+  const row = data[0]
   return {
-    id: data.id,
-    email: data.email,
-    role: data.role as UserRole,
-    full_name: data.full_name || '',
-    organization_id: data.organization_id || null,
+    id: row.id,
+    email: row.email,
+    role: row.role as UserRole,
+    full_name: row.full_name || '',
+    organization_id: row.organization_id || null,
   }
 }
 
@@ -83,9 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { error: authError } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { role, full_name: fullName },
-      },
+      options: { data: { role, full_name: fullName } },
     })
     if (authError) {
       setError(authError.message)
