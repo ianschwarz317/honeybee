@@ -176,13 +176,17 @@ export default function OwnerPortal() {
 
   useEffect(() => {
     if (!user) return
-  async function load() {
+async function load() {
       setDataLoading(true)
       try {
-const { data: petsData, error: petError } = await supabase
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session?.user?.id) { setDataLoading(false); return }
+        const userId = session.user.id
+
+        const { data: petsData, error: petError } = await supabase
           .from('pets')
           .select('*')
-          .eq('owner_id', user!.id)
+          .eq('owner_id', userId)
           .eq('is_active', true)
           .order('created_at', { ascending: false })
           .limit(1)
