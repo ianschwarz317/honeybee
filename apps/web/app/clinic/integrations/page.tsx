@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { mockClinic } from '@/lib/mock-data'
+
 
 const pimsPartners = [
   { name: 'Avimark', desc: 'Most widely used PIMS in U.S. general practice', color: '#0071E3' },
@@ -20,7 +20,7 @@ const Sidebar = () => (
         <Image src="/logo.svg" alt="Honeybee" width={24} height={24} style={{ borderRadius: 5 }} />
         <span style={{ fontWeight: 700, fontSize: 15, color: 'white' }}>Honeybee</span>
       </Link>
-      <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', paddingLeft: 32 }}>{mockClinic.name}</div>
+      <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', paddingLeft: 32 }}>{'Summit Animal Hospital'}</div>
     </div>
     <nav style={{ flex: 1, padding: '10px 8px' }}>
       {[
@@ -43,9 +43,9 @@ const Sidebar = () => (
       ))}
     </nav>
     <div style={{ padding: '14px 16px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 10 }}>
-      <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 600, color: 'white', flexShrink: 0 }}>{mockClinic.initials}</div>
+      <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 600, color: 'white', flexShrink: 0 }}>{'SC'}</div>
       <div>
-        <div style={{ fontSize: 13, fontWeight: 600, color: 'white', lineHeight: 1.2 }}>{mockClinic.doctor}</div>
+        <div style={{ fontSize: 13, fontWeight: 600, color: 'white', lineHeight: 1.2 }}>{'Dr. Sarah Chen, DVM'}</div>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>Clinic Admin</div>
       </div>
     </div>
