@@ -104,7 +104,7 @@ function AppleWalletView({ pet, chip }: { pet: any; chip: any }) {
     ]
     const size = 5
     return (
-      <svg width={rows[0]?.length * size} height={rows.length*size} style={{ display:'block' }}>
+      <svg width={(rows[0]?.length ?? 21) * size} height={rows.length*size} style={{ display:'block' }}>
         {rows.map((row,r)=>row.map((cell,c)=>cell?<rect key={`${r}-${c}`} x={c*size} y={r*size} width={size} height={size} fill="#1D1D1F"/>:null))}
       </svg>
     )
