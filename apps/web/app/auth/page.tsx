@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth, type UserRole, dashboardPath } from '@/lib/auth-context'
+import { useAuth, type UserRole, dashboardPath, isClinic } from '@/lib/auth-context'
+import { supabase } from '@/lib/supabase'
 
 type Screen = 'role-select' | 'login' | 'signup'
 
@@ -26,21 +27,30 @@ export default function AuthPage() {
     clearError()
   }
 
-async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSubmitting(true)
     try {
       if (screen === 'login') {
-        await signIn(email, password)
-        const dest = selectedRole === 'clinic_admin' ? '/clinic' : '/owner'
-        router.replace(dest)
+        const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+        if (signInError) throw signInError
+        if (data.user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', data.user.id)
+            .single()
+          const role = profile?.role
+          const dest = (role === 'clinic_admin' || role === 'clinic_staff') ? '/clinic' : '/owner'
+          router.replace(dest)
+        }
       } else {
         await signUp(email, password, selectedRole, fullName)
         const dest = selectedRole === 'clinic_admin' ? '/clinic' : '/owner'
         router.replace(dest)
       }
-    } catch {
-      // error already set in context
+    } catch (err: any) {
+      console.error(err)
     } finally {
       setSubmitting(false)
     }
@@ -129,15 +139,6 @@ async function handleSubmit(e: React.FormEvent) {
               <span style={{ fontSize: 12, fontWeight: 600, background: 'var(--blue-light)', color: '#0051A2', borderRadius: 100, padding: '2px 10px' }}>
                 {roleLabel}
               </span>
-              {screen === 'signup' && (
-                <button
-                  type="button"
-                  onClick={() => { setSelectedRole(selectedRole === 'pet_owner' ? 'clinic_admin' : 'pet_owner'); clearError() }}
-                  style={{ fontSize: 12, background: 'none', border: 'none', color: 'var(--blue)', cursor: 'pointer', fontFamily: 'inherit' }}
-                >
-                  Switch
-                </button>
-              )}
             </div>
 
             {screen === 'signup' && (
@@ -163,7 +164,7 @@ async function handleSubmit(e: React.FormEvent) {
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder={selectedRole === 'pet_owner' ? 'owner@honeybee.local' : 'clinic@honeybee.local'}
+                placeholder={selectedRole === 'pet_owner' ? 'owner@honeybee.com' : 'clinic@honeybee.com'}
                 style={{ width: '100%', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', padding: '10px 12px', fontSize: 15, fontFamily: 'inherit', color: 'var(--text-primary)', outline: 'none', boxSizing: 'border-box', background: 'var(--surface)', transition: 'border-color 0.15s' }}
                 onFocus={e => e.currentTarget.style.borderColor = 'var(--blue)'}
                 onBlur={e => e.currentTarget.style.borderColor = 'var(--border)'}
@@ -202,7 +203,7 @@ async function handleSubmit(e: React.FormEvent) {
 
             {screen === 'login' && (
               <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-tertiary)', marginTop: 14 }}>
-                Demo: {selectedRole === 'pet_owner' ? 'owner@honeybee.local' : 'clinic@honeybee.local'} / password
+                Demo: {selectedRole === 'pet_owner' ? 'owner@honeybee.com' : 'clinic@honeybee.com'} / Honeybee2026!
               </p>
             )}
           </form>
