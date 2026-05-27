@@ -179,23 +179,23 @@ export default function OwnerPortal() {
   async function load() {
       setDataLoading(true)
       try {
-        const { data: petData, error: petError } = await supabase
+const { data: petsData, error: petError } = await supabase
           .from('pets')
           .select('*')
           .eq('owner_id', user!.id)
           .eq('is_active', true)
           .order('created_at', { ascending: false })
           .limit(1)
-          .single()
-        if (petError || !petData) { setDataLoading(false); return }
+        if (petError || !petsData || petsData.length === 0) { setDataLoading(false); return }
+        const petData = petsData[0]
         setPet(petData)
 
-        const { data: chipData } = await supabase
+const { data: chipsData } = await supabase
           .from('chips')
           .select('*')
           .eq('pet_id', petData.id)
           .limit(1)
-          .single()
+        const chipData = chipsData?.[0] ?? null
         setChip(chipData ?? null)
 
         const { data: recs } = await supabase
