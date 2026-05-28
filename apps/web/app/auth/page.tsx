@@ -62,41 +62,42 @@ export default function AuthPage() {
       {/* Logo */}
       <div style={{ padding:'24px 32px', flexShrink:0 }}>
         <Link href="/" style={{ display:'inline-flex', alignItems:'center', gap:8 }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2C10.5 5.5 7 7 4 7c0 6 3.5 11 8 13 4.5-2 8-7 8-13-3 0-6.5-1.5-8-5z" fill="#E8820C"/>
-          </svg>
-          <span style={{ fontWeight:700, fontSize:14, letterSpacing:'-0.02em', color:'#0A0A0A' }}>Honeybee</span>
+          <span style={{ fontSize:20, lineHeight:1 }}>🐝</span>
+          <span style={{ fontWeight:700, fontSize:15, color:'#E8820C', letterSpacing:'-0.02em' }}>honeybee</span>
         </Link>
       </div>
 
       {/* Centered card */}
       <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', padding:'16px 24px 80px' }}>
         <div style={{ width:'100%', maxWidth:440 }}>
-          <div className="fade-up" style={{ background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, padding:'40px' }}>
+          <div className="fade-up" style={{ background:'#FFFFFF', borderRadius:12, boxShadow:'0 1px 4px rgba(0,0,0,0.06), 0 0 0 1px #EBEBEB', padding:'40px' }}>
 
             {screen === 'role-select' && (
               <div>
                 <h1 style={{ fontSize:24, fontWeight:600, letterSpacing:'-0.02em', marginBottom:6, color:'#0A0A0A' }}>Welcome back.</h1>
-                <p style={{ fontSize:14, color:'#6B7280', marginBottom:32, lineHeight:1.5 }}>
+                <p style={{ fontSize:14, color:'#6B7280', marginBottom:32, lineHeight:1.6 }}>
                   How are you signing in today?
                 </p>
                 <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:28 }}>
                   {[
-                    { role:'pet_owner' as UserRole, title:'Pet Owner', sub:'View records, chip info & health summary' },
-                    { role:'clinic_admin' as UserRole, title:'Veterinary Clinic', sub:'Manage patients, records & chip registration' },
-                  ].map(({ role, title, sub }) => (
+                    { role:'pet_owner' as UserRole, title:'Pet Owner', sub:'View records, chip info & health summary', emoji:'🐾' },
+                    { role:'clinic_admin' as UserRole, title:'Veterinary Clinic', sub:'Manage patients, records & chip registration', emoji:'🏥' },
+                  ].map(({ role, title, sub, emoji }) => (
                     <button
                       key={role}
                       onClick={() => { setSelectedRole(role); setScreen('login'); clearError(); setLocalError('') }}
-                      style={{ width:'100%', padding:'18px 20px', background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, cursor:'pointer', textAlign:'left', transition:'border-color 0.15s ease-out', display:'flex', alignItems:'center', justifyContent:'space-between' }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#E8820C' }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = '#EBEBEB' }}
+                      style={{ width:'100%', padding:'18px 20px', background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:12, cursor:'pointer', textAlign:'left', transition:'border-color 0.15s ease-out, box-shadow 0.15s ease-out', display:'flex', alignItems:'center', gap:16 }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#E8820C'; e.currentTarget.style.boxShadow = '0 0 0 3px #FEF3E2' }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = '#EBEBEB'; e.currentTarget.style.boxShadow = 'none' }}
                     >
-                      <div>
-                        <div style={{ fontSize:14, fontWeight:600, marginBottom:3, color:'#0A0A0A' }}>{title}</div>
+                      <div style={{ width:40, height:40, borderRadius:'50%', background:'#FEF3E2', display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>
+                        {emoji}
+                      </div>
+                      <div style={{ flex:1 }}>
+                        <div style={{ fontSize:14, fontWeight:600, marginBottom:2, color:'#0A0A0A' }}>{title}</div>
                         <div style={{ fontSize:13, color:'#6B7280', lineHeight:1.4 }}>{sub}</div>
                       </div>
-                      <span style={{ fontSize:18, color:'#D1D5DB', marginLeft:16, flexShrink:0 }}>›</span>
+                      <span style={{ fontSize:18, color:'#D1D5DB', flexShrink:0 }}>›</span>
                     </button>
                   ))}
                 </div>
@@ -122,7 +123,7 @@ export default function AuthPage() {
                 <h1 style={{ fontSize:22, fontWeight:600, letterSpacing:'-0.02em', marginBottom:4, color:'#0A0A0A' }}>
                   {screen === 'login' ? 'Sign in' : 'Create account'}
                 </h1>
-                <p style={{ fontSize:14, color:'#6B7280', marginBottom:28 }}>
+                <p style={{ fontSize:14, color:'#6B7280', marginBottom:28, lineHeight:1.5 }}>
                   {screen === 'login'
                     ? `Continuing as ${selectedRole === 'pet_owner' ? 'Pet Owner' : 'Vet Clinic'}`
                     : `Signing up as ${selectedRole === 'pet_owner' ? 'Pet Owner' : 'Vet Clinic'}`}
@@ -146,17 +147,12 @@ export default function AuthPage() {
                 </div>
 
                 {displayError && (
-                  <div style={{ marginBottom:16, fontSize:13, color:'#C0392B' }}>
+                  <div style={{ marginBottom:16, fontSize:13, color:'#DC2626', background:'#FEF2F2', borderRadius:8, padding:'10px 12px' }}>
                     {displayError}
                   </div>
                 )}
 
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="btn-primary"
-                  style={{ width:'100%' }}
-                >
+                <button type="submit" disabled={submitting} className="btn-primary" style={{ width:'100%' }}>
                   {submitting ? 'Please wait…' : screen === 'login' ? 'Sign In' : 'Create Account'}
                 </button>
 
