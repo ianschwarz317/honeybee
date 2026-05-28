@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "node -e \"const fs=require('fs'),p='.next/export-detail.json';if(!fs.existsSync(p))fs.writeFileSync(p,JSON.stringify({version:1,success:false}))\"",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
