@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -65,11 +65,35 @@ export default function OwnerPortal() {
   const [scans, setScans] = useState<any[]>([])
   const [dataLoading, setDataLoading] = useState(true)
   const [selectedRecord, setSelectedRecord] = useState<any>(null)
+  const [aiSummary, setAiSummary] = useState<string | null>(null)
+  const [summaryLoading, setSummaryLoading] = useState(false)
+  const sessionTokenRef = useRef<string | null>(null)
 
   useEffect(() => {
     if (!authLoading && !user) router.replace('/auth')
     if (!authLoading && user && (user.role === 'clinic_admin' || user.role === 'clinic_staff')) router.replace('/clinic')
   }, [user, authLoading, router])
+
+  async function fetchSummary(petId: string, token: string) {
+    setSummaryLoading(true)
+    try {
+      const res = await fetch('/api/summarize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ petId }),
+      })
+      if (!res.ok) throw new Error('Summary request failed')
+      const { summary } = await res.json()
+      setAiSummary(summary)
+    } catch (e) {
+      console.error('AI summary error:', e)
+    } finally {
+      setSummaryLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (!user) return
@@ -79,6 +103,7 @@ export default function OwnerPortal() {
         const { data: { session } } = await supabase.auth.getSession()
         if (!session?.user?.id) { setDataLoading(false); return }
         const uid = session.user.id
+        sessionTokenRef.current = session.access_token
 
         const { data: petsData } = await supabase
           .from('pets').select('*')
@@ -87,6 +112,7 @@ export default function OwnerPortal() {
         if (!petsData || petsData.length === 0) { setDataLoading(false); return }
         const p = petsData[0]
         setPet(p)
+        fetchSummary(p.id, session.access_token)
 
         const { data: chipsData } = await supabase
           .from('chips').select('*').eq('pet_id', p.id).limit(1)
@@ -223,18 +249,30 @@ export default function OwnerPortal() {
 
         {/* AI Summary */}
         <div className="fade-up delay-3" style={{ padding:'24px 0',borderTop:'1px solid var(--border)',borderBottom:'1px solid var(--border)',marginBottom:32 }}>
-          <div style={{ display:'flex',alignItems:'center',gap:8,marginBottom:14 }}>
-            <span style={{ color:'var(--honey)',fontWeight:700,fontSize:14 }}>✦</span>
-            <span className="section-label" style={{ marginBottom:0 }}>Health Summary</span>
+          <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14 }}>
+            <div style={{ display:'flex',alignItems:'center',gap:8 }}>
+              <span style={{ color:'var(--honey)',fontWeight:700,fontSize:14 }}>✦</span>
+              <span className="section-label" style={{ marginBottom:0 }}>Health Summary</span>
+            </div>
+            <button
+              onClick={() => pet && sessionTokenRef.current && fetchSummary(pet.id, sessionTokenRef.current)}
+              disabled={summaryLoading}
+              style={{ fontSize:12,color:'var(--text-tertiary)',background:'none',border:'none',cursor:summaryLoading ? 'default' : 'pointer',padding:'2px 0',fontFamily:'inherit',opacity:summaryLoading ? 0.5 : 1 }}
+            >
+              {summaryLoading ? 'Generating…' : 'Regenerate'}
+            </button>
           </div>
-          <p style={{ fontSize:15,color:'var(--text-secondary)',lineHeight:1.75,marginBottom:12 }}>
-            {pet.name} is a healthy {age(pet.date_of_birth)} {pet.breed} with no significant concerns.
-            April 2026 wellness exam confirmed normal cardiac and pulmonary function, stable weight, and clear hips.
-          </p>
-          <p style={{ fontSize:15,color:'var(--text-secondary)',lineHeight:1.75 }}>
-            Vaccinations current through April 2029. Monthly Heartgard Plus — last heartworm test negative.
-            Mild tartar noted on molars; dental cleaning recommended within 6–12 months.
-          </p>
+          {summaryLoading && !aiSummary ? (
+            <p style={{ fontSize:15,color:'var(--text-tertiary)',lineHeight:1.75,fontStyle:'italic' }}>
+              Generating health brief…
+            </p>
+          ) : aiSummary ? (
+            <p style={{ fontSize:15,color:'var(--text-secondary)',lineHeight:1.75 }}>{aiSummary}</p>
+          ) : (
+            <p style={{ fontSize:15,color:'var(--text-tertiary)',lineHeight:1.75,fontStyle:'italic' }}>
+              Health summary unavailable.
+            </p>
+          )}
         </div>
 
         {/* Medical Records */}
