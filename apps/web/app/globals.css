@@ -22,7 +22,7 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -106,10 +106,10 @@ button { font-family: inherit; }
   padding: 16px 0;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
-  transition: opacity 0.15s ease-out;
+  transition: background 0.15s ease-out;
 }
 .record-row:last-child { border-bottom: none; }
-.record-row:hover { opacity: 0.6; }
+.record-row:hover { background: #FAFAFA; }
 
 .hb-page {
   max-width: 560px;

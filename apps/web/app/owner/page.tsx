@@ -19,6 +19,15 @@ const recordTypeLabel: Record<string, string> = {
   lab: 'Lab',
 }
 
+function NavIcon({ name, color }: { name: string; color: string }) {
+  const s = { width:20, height:20, viewBox:'0 0 24 24', fill:'none', stroke:color, strokeWidth:'1.5', strokeLinecap:'round' as const, strokeLinejoin:'round' as const }
+  if (name === 'home') return <svg {...s}><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+  if (name === 'file') return <svg {...s}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+  if (name === 'clock') return <svg {...s}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+  if (name === 'wallet') return <svg {...s}><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+  return null
+}
+
 function RecordModal({ record, onClose }: { record: any; onClose: () => void }) {
   const label = recordTypeLabel[record.record_type] ?? 'Record'
   return (
@@ -35,8 +44,8 @@ function RecordModal({ record, onClose }: { record: any; onClose: () => void }) 
           <span style={{ background:'#F4F4F5', color:'#3F3F46', borderRadius:6, padding:'3px 8px', fontSize:12, fontWeight:500 }}>{label}</span>
           <span style={{ fontSize:13, color:'#6B7280' }}>{fmtDate(record.record_date)}</span>
         </div>
-        <h2 style={{ fontSize:22, fontWeight:700, marginBottom:12, letterSpacing:'-0.02em', color:'#0A0A0A' }}>{record.title}</h2>
-        <p style={{ fontSize:15, color:'#6B7280', lineHeight:1.7, marginBottom:20 }}>{record.content}</p>
+        <h2 style={{ fontSize:22, fontWeight:600, marginBottom:12, letterSpacing:'-0.02em', color:'#0A0A0A' }}>{record.title}</h2>
+        <p style={{ fontSize:14, color:'#6B7280', lineHeight:1.7, marginBottom:20 }}>{record.content}</p>
         {record.metadata && Object.keys(record.metadata).filter((k: string) => k !== 'author').length > 0 && (
           <div style={{ background:'#F4F4F5', borderRadius:8, padding:'14px 16px', marginBottom:20, display:'grid', gridTemplateColumns:'1fr 1fr', gap:'10px 20px' }}>
             {Object.entries(record.metadata).filter(([k]) => k !== 'author').map(([k, v]) => (
@@ -50,7 +59,7 @@ function RecordModal({ record, onClose }: { record: any; onClose: () => void }) 
         <div style={{ fontSize:13, color:'#6B7280', marginBottom:24 }}>{record.metadata?.author || 'Summit Animal Hospital'}</div>
         <button
           onClick={onClose}
-          style={{ width:'100%', height:44, background:'#F4F4F5', border:'none', borderRadius:8, fontSize:15, fontWeight:500, cursor:'pointer', color:'#0A0A0A', fontFamily:'inherit' }}
+          style={{ width:'100%', height:44, background:'#F4F4F5', border:'none', borderRadius:8, fontSize:14, fontWeight:500, cursor:'pointer', color:'#0A0A0A', fontFamily:'inherit' }}
         >
           Close
         </button>
@@ -62,35 +71,57 @@ function RecordModal({ record, onClose }: { record: any; onClose: () => void }) 
 
 function Sidebar({ user }: { user: any }) {
   const router = useRouter()
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null)
   const initials = (user?.full_name || 'U').split(' ').map((n: string) => n[0]).join('').toUpperCase()
 
   const navItems = [
-    { label: 'Overview', active: true },
-    { label: 'Medical Records', active: false },
-    { label: 'Scan History', active: false },
-    { label: 'Wallet', active: false },
+    { label: 'Overview',        icon: 'home',   active: true  },
+    { label: 'Medical Records', icon: 'file',   active: false },
+    { label: 'Scan History',    icon: 'clock',  active: false },
+    { label: 'Wallet',          icon: 'wallet', active: false },
   ]
 
   return (
-    <aside style={{ width:220, flexShrink:0, background:'#FFFFFF', borderRight:'1px solid #EBEBEB', display:'flex', flexDirection:'column', minHeight:'100vh', position:'sticky', top:0 }}>
-      <div style={{ padding:'20px 16px', borderBottom:'1px solid #EBEBEB' }}>
+    <aside style={{ width:240, flexShrink:0, background:'#FFFFFF', borderRight:'1px solid #EBEBEB', display:'flex', flexDirection:'column', minHeight:'100vh', position:'sticky', top:0 }}>
+
+      <div style={{ padding:'20px 20px 18px', borderBottom:'1px solid #EBEBEB' }}>
         <Link href="/" style={{ display:'flex', alignItems:'center', gap:8 }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M12 2C10.5 5.5 7 7 4 7c0 6 3.5 11 8 13 4.5-2 8-7 8-13-3 0-6.5-1.5-8-5z" fill="#E8820C"/>
           </svg>
-          <span style={{ fontWeight:700, fontSize:15, color:'#0A0A0A', letterSpacing:'-0.02em' }}>Honeybee</span>
+          <span style={{ fontWeight:700, fontSize:14, color:'#0A0A0A', letterSpacing:'-0.02em' }}>Honeybee</span>
         </Link>
       </div>
-      <nav style={{ flex:1, padding:'8px' }}>
-        {navItems.map(({ label, active }) => (
+
+      <nav style={{ flex:1, padding:'8px 12px' }}>
+        {navItems.map(({ label, icon, active }) => (
           <div
             key={label}
-            style={{ display:'flex', alignItems:'center', padding:'8px 12px', paddingLeft: active ? '10px' : '12px', borderRadius:6, marginBottom:2, color: active ? '#0A0A0A' : '#6B7280', fontSize:14, fontWeight: active ? 500 : 400, cursor:'pointer', borderLeft: active ? '2px solid #E8820C' : '2px solid transparent', transition:'color 0.15s ease-out' }}
+            onMouseEnter={() => setHoveredNav(label)}
+            onMouseLeave={() => setHoveredNav(null)}
+            style={{
+              display:'flex',
+              alignItems:'center',
+              gap:10,
+              padding:'10px 16px',
+              paddingLeft: active ? '14px' : '16px',
+              borderRadius:8,
+              marginBottom:2,
+              color: active ? '#0A0A0A' : '#6B7280',
+              fontSize:14,
+              fontWeight: active ? 500 : 400,
+              cursor:'pointer',
+              borderLeft: active ? '2px solid #E8820C' : '2px solid transparent',
+              background: !active && hoveredNav === label ? '#F4F4F5' : 'transparent',
+              transition:'background 0.15s ease-out',
+            }}
           >
-            {label}
+            <NavIcon name={icon} color={active ? '#0A0A0A' : '#9CA3AF'} />
+            <span>{label}</span>
           </div>
         ))}
       </nav>
+
       <div style={{ padding:'16px', borderTop:'1px solid #EBEBEB', display:'flex', alignItems:'center', gap:10 }}>
         <div style={{ width:28, height:28, borderRadius:'50%', background:'#0A0A0A', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:600, color:'white', flexShrink:0 }}>
           {initials}
@@ -102,7 +133,7 @@ function Sidebar({ user }: { user: any }) {
         <button
           onClick={() => supabase.auth.signOut().then(() => router.replace('/auth'))}
           title="Sign out"
-          style={{ background:'none', border:'none', color:'#6B7280', cursor:'pointer', fontSize:14, padding:'4px', flexShrink:0, lineHeight:1, fontFamily:'inherit' }}
+          style={{ background:'none', border:'none', color:'#9CA3AF', cursor:'pointer', fontSize:14, padding:'4px', flexShrink:0, lineHeight:1, fontFamily:'inherit' }}
         >↪</button>
       </div>
     </aside>
@@ -228,8 +259,8 @@ export default function OwnerPortal() {
   if (!pet) {
     return (
       <div style={{ minHeight:'100vh', background:'#FFFFFF', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:16, padding:40, textAlign:'center' }}>
-        <h2 style={{ fontSize:22, fontWeight:700 }}>No pet found</h2>
-        <p style={{ color:'#6B7280', fontSize:15, maxWidth:280 }}>No pets are linked to this account yet.</p>
+        <h2 style={{ fontSize:22, fontWeight:600 }}>No pet found</h2>
+        <p style={{ color:'#6B7280', fontSize:14, maxWidth:280 }}>No pets are linked to this account yet.</p>
         <button onClick={() => supabase.auth.signOut().then(() => router.replace('/auth'))} className="btn-secondary" style={{ marginTop:8 }}>Sign out</button>
       </div>
     )
@@ -245,13 +276,23 @@ export default function OwnerPortal() {
 
       <Sidebar user={user} />
 
-      <div style={{ flex:1, display:'flex', flexDirection:'column', minWidth:0, overflow:'auto' }}>
-        <main style={{ padding:'40px 40px 80px', maxWidth:720, width:'100%' }}>
+      <div style={{ flex:1, minWidth:0, overflow:'auto' }}>
+        <main style={{ padding:'40px 48px 80px', maxWidth:760, width:'100%' }}>
 
-          {/* Pet header */}
-          <div className="fade-up" style={{ marginBottom:32 }}>
-            <h1 style={{ fontSize:32, fontWeight:700, letterSpacing:'-0.02em', color:'#0A0A0A', marginBottom:6 }}>{pet.name}</h1>
-            <p style={{ fontSize:15, color:'#6B7280' }}>{pet.breed} &middot; {pet.color} &middot; {petAge} yrs</p>
+          {/* Page title row */}
+          <div className="fade-up" style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:32 }}>
+            <div>
+              <h1 style={{ fontSize:24, fontWeight:600, letterSpacing:'-0.02em', color:'#0A0A0A', marginBottom:4 }}>{pet.name}</h1>
+              <p style={{ fontSize:14, color:'#6B7280' }}>{pet.breed} &middot; {pet.color} &middot; {petAge} yrs old</p>
+            </div>
+            <button
+              onClick={downloadAppleWallet}
+              disabled={walletLoading}
+              className="btn-primary"
+              style={{ flexShrink:0, marginTop:2 }}
+            >
+              {walletLoading ? 'Generating…' : 'Add to Wallet'}
+            </button>
           </div>
 
           {/* Stats row */}
@@ -261,8 +302,8 @@ export default function OwnerPortal() {
               { label:'Scans', value:scans.length },
               { label:'Years old', value:petAge },
             ].map(({ label, value }) => (
-              <div key={label} style={{ background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, padding:'20px' }}>
-                <div style={{ fontSize:32, fontWeight:700, letterSpacing:'-0.02em', color:'#0A0A0A', lineHeight:1 }}>{value}</div>
+              <div key={label} style={{ background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, padding:'24px' }}>
+                <div style={{ fontSize:32, fontWeight:600, letterSpacing:'-0.03em', color:'#0A0A0A', lineHeight:1 }}>{value}</div>
                 <div style={{ fontSize:13, color:'#6B7280', marginTop:8, fontWeight:500 }}>{label}</div>
               </div>
             ))}
@@ -273,21 +314,21 @@ export default function OwnerPortal() {
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:32 }}>
               <div>
                 <div style={{ fontSize:11, fontWeight:500, color:'rgba(255,255,255,0.4)', textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:6 }}>Microchip</div>
-                <div style={{ fontSize:18, fontWeight:600, color:'white', letterSpacing:'-0.01em' }}>{pet.name}</div>
+                <div style={{ fontSize:17, fontWeight:600, color:'white', letterSpacing:'-0.01em' }}>{pet.name}</div>
               </div>
               <span style={{ fontSize:11, color:'rgba(255,255,255,0.5)', background:'rgba(255,255,255,0.1)', borderRadius:4, padding:'3px 8px', fontWeight:500 }}>Active</span>
             </div>
-            <div style={{ fontFamily:"'SF Mono', 'Fira Code', monospace", fontSize:18, color:'white', letterSpacing:'0.1em', marginBottom:24, fontWeight:400 }}>
+            <div style={{ fontFamily:"'SF Mono', 'Fira Code', monospace", fontSize:17, color:'white', letterSpacing:'0.1em', marginBottom:24, fontWeight:400 }}>
               {chipFormatted || '— — — —'}
             </div>
             <div style={{ fontSize:12, color:'rgba(255,255,255,0.35)', fontWeight:400 }}>NFC · 134.2 kHz · ISO 11784/5</div>
           </div>
 
           {/* Emergency contact */}
-          <div className="fade-up delay-2" style={{ background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, padding:'18px 20px', marginBottom:32, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <div className="fade-up delay-2" style={{ background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, padding:'20px 24px', marginBottom:32, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
             <div>
               <div className="section-label" style={{ marginBottom:4 }}>Emergency Contact</div>
-              <div style={{ fontSize:15, fontWeight:600, color:'#0A0A0A' }}>{chip?.emergency_contact?.name || user?.full_name || 'Ian Schwarz'}</div>
+              <div style={{ fontSize:14, fontWeight:600, color:'#0A0A0A' }}>{chip?.emergency_contact?.name || user?.full_name || 'Ian Schwarz'}</div>
               <div style={{ fontSize:14, color:'#6B7280', marginTop:2 }}>{chip?.emergency_contact?.phone || '(801) 555-0192'}</div>
             </div>
             <a
@@ -313,11 +354,11 @@ export default function OwnerPortal() {
               </button>
             </div>
             {summaryLoading && !aiSummary ? (
-              <p style={{ fontSize:15, color:'#6B7280', lineHeight:1.75, fontStyle:'italic' }}>Generating health brief…</p>
+              <p style={{ fontSize:14, color:'#6B7280', lineHeight:1.75, fontStyle:'italic' }}>Generating health brief…</p>
             ) : aiSummary ? (
-              <p style={{ fontSize:15, color:'#6B7280', lineHeight:1.75 }}>{aiSummary}</p>
+              <p style={{ fontSize:14, color:'#6B7280', lineHeight:1.75 }}>{aiSummary}</p>
             ) : (
-              <p style={{ fontSize:15, color:'#6B7280', lineHeight:1.75, fontStyle:'italic' }}>Health summary unavailable.</p>
+              <p style={{ fontSize:14, color:'#6B7280', lineHeight:1.75, fontStyle:'italic' }}>Health summary unavailable.</p>
             )}
           </div>
 
@@ -327,18 +368,18 @@ export default function OwnerPortal() {
               <div className="section-label" style={{ marginBottom:0 }}>Medical Records</div>
               <span style={{ fontSize:13, color:'#6B7280' }}>{records.length} total</span>
             </div>
-            <div>
+            <div style={{ border:'1px solid #EBEBEB', borderRadius:8, overflow:'hidden' }}>
               {records.map((rec: any) => {
                 const label = recordTypeLabel[rec.record_type] ?? 'Record'
                 return (
-                  <div key={rec.id} className="record-row" onClick={() => setSelectedRecord(rec)}>
+                  <div key={rec.id} className="record-row" onClick={() => setSelectedRecord(rec)} style={{ padding:'16px 20px' }}>
                     <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
                       <div style={{ flex:1, minWidth:0, paddingRight:16 }}>
                         <div style={{ marginBottom:6 }}>
                           <span style={{ background:'#F4F4F5', color:'#3F3F46', borderRadius:6, padding:'3px 8px', fontSize:12, fontWeight:500 }}>{label}</span>
                         </div>
-                        <div style={{ fontSize:15, fontWeight:600, letterSpacing:'-0.01em', marginBottom:4, color:'#0A0A0A' }}>{rec.title}</div>
-                        <div style={{ fontSize:14, color:'#6B7280', lineHeight:1.5, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>{rec.content}</div>
+                        <div style={{ fontSize:14, fontWeight:600, letterSpacing:'-0.01em', marginBottom:4, color:'#0A0A0A' }}>{rec.title}</div>
+                        <div style={{ fontSize:13, color:'#6B7280', lineHeight:1.5, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>{rec.content}</div>
                       </div>
                       <div style={{ flexShrink:0, textAlign:'right' }}>
                         <div style={{ fontSize:13, color:'#6B7280' }}>{fmtDate(rec.record_date)}</div>
@@ -348,12 +389,15 @@ export default function OwnerPortal() {
                   </div>
                 )
               })}
+              {records.length === 0 && (
+                <div style={{ padding:'32px 20px', textAlign:'center', color:'#6B7280', fontSize:14 }}>No records yet</div>
+              )}
             </div>
           </div>
 
           {/* Scan log */}
           {scans.length > 0 && (
-            <div className="fade-up delay-4" style={{ marginBottom:40 }}>
+            <div className="fade-up delay-4">
               <div className="section-label">Scan History</div>
               <div style={{ border:'1px solid #EBEBEB', borderRadius:8, overflow:'hidden' }}>
                 {scans.map((s: any, i: number) => (
@@ -365,33 +409,6 @@ export default function OwnerPortal() {
               </div>
             </div>
           )}
-
-          {/* Wallet */}
-          <div className="fade-up delay-5" style={{ display:'flex', flexDirection:'column', gap:10 }}>
-            <button
-              onClick={downloadAppleWallet}
-              disabled={walletLoading}
-              style={{ width:'100%', background:'#000000', borderRadius:8, border:'none', cursor: walletLoading ? 'default' : 'pointer', padding:'16px 20px', display:'flex', alignItems:'center', justifyContent:'center', gap:10 }}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-              </svg>
-              <span style={{ color: walletLoading ? 'rgba(255,255,255,0.5)' : 'white', fontSize:15, fontWeight:600, fontFamily:'inherit' }}>
-                {walletLoading ? 'Generating…' : 'Add to Apple Wallet'}
-              </span>
-            </button>
-            <button
-              disabled
-              style={{ width:'100%', background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', cursor:'not-allowed', padding:'16px 20px', display:'flex', alignItems:'center', justifyContent:'center', gap:10 }}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="#D1D5DB">
-                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
-              </svg>
-              <span style={{ color:'#D1D5DB', fontSize:15, fontWeight:600, fontFamily:'inherit' }}>
-                Google Wallet — Coming Soon
-              </span>
-            </button>
-          </div>
 
         </main>
       </div>

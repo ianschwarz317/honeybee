@@ -15,43 +15,84 @@ function fmtDT(d: string) {
 
 const speciesLabel: Record<string, string> = { dog: 'Dog', cat: 'Cat' }
 
+function NavIcon({ name, color }: { name: string; color: string }) {
+  const s = { width:20, height:20, viewBox:'0 0 24 24', fill:'none', stroke:color, strokeWidth:'1.5', strokeLinecap:'round' as const, strokeLinejoin:'round' as const }
+  if (name === 'grid') return <svg {...s}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+  if (name === 'users') return <svg {...s}><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+  if (name === 'file') return <svg {...s}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+  if (name === 'chip') return <svg {...s}><rect x="7" y="7" width="10" height="10" rx="1"/><line x1="7" y1="9" x2="4" y2="9"/><line x1="7" y1="12" x2="4" y2="12"/><line x1="7" y1="15" x2="4" y2="15"/><line x1="17" y1="9" x2="20" y2="9"/><line x1="17" y1="12" x2="20" y2="12"/><line x1="17" y1="15" x2="20" y2="15"/><line x1="9" y1="7" x2="9" y2="4"/><line x1="12" y1="7" x2="12" y2="4"/><line x1="15" y1="7" x2="15" y2="4"/><line x1="9" y1="17" x2="9" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/><line x1="15" y1="17" x2="15" y2="20"/></svg>
+  if (name === 'star') return <svg {...s}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  if (name === 'link') return <svg {...s}><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+  if (name === 'bar') return <svg {...s}><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+  if (name === 'settings') return <svg {...s}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+  return null
+}
+
 function Sidebar({ user, orgName }: { user: any; orgName: string }) {
   const router = useRouter()
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null)
   const initials = (user?.full_name || 'SC').split(' ').map((n: string) => n[0]).join('').toUpperCase()
   const roleLabel = user?.role === 'clinic_admin' ? 'Clinic Admin' : 'Staff'
 
   const navItems = [
-    { label: 'Dashboard',         href: '/clinic',              active: true,  badge: undefined },
-    { label: 'Patients',          href: '/clinic',              active: false, badge: undefined },
-    { label: 'Records',           href: '/clinic',              active: false, badge: undefined },
-    { label: 'Chip Registration', href: '/clinic',              active: false, badge: undefined },
-    { label: 'AI Summaries',      href: '/clinic',              active: false, badge: undefined },
-    { label: 'PIMS Integrations', href: '/clinic/integrations', active: false, badge: 'New'     },
-    { label: 'Reports',           href: '/clinic',              active: false, badge: undefined },
-    { label: 'Settings',          href: '/clinic',              active: false, badge: undefined },
+    { label: 'Dashboard',         href: '/clinic',              icon: 'grid',     active: true,  badge: undefined },
+    { label: 'Patients',          href: '/clinic',              icon: 'users',    active: false, badge: undefined },
+    { label: 'Records',           href: '/clinic',              icon: 'file',     active: false, badge: undefined },
+    { label: 'Chip Registration', href: '/clinic',              icon: 'chip',     active: false, badge: undefined },
+    { label: 'AI Summaries',      href: '/clinic',              icon: 'star',     active: false, badge: undefined },
+    { label: 'PIMS Integrations', href: '/clinic/integrations', icon: 'link',     active: false, badge: 'New'     },
+    { label: 'Reports',           href: '/clinic',              icon: 'bar',      active: false, badge: undefined },
+    { label: 'Settings',          href: '/clinic',              icon: 'settings', active: false, badge: undefined },
   ]
 
   return (
-    <aside style={{ width:220, flexShrink:0, background:'#FFFFFF', borderRight:'1px solid #EBEBEB', display:'flex', flexDirection:'column', minHeight:'100vh', position:'sticky', top:0 }}>
-      <div style={{ padding:'20px 16px', borderBottom:'1px solid #EBEBEB' }}>
-        <Link href="/" style={{ display:'flex', alignItems:'center', gap:8, textDecoration:'none', marginBottom:4 }}>
+    <aside style={{ width:240, flexShrink:0, background:'#FFFFFF', borderRight:'1px solid #EBEBEB', display:'flex', flexDirection:'column', minHeight:'100vh', position:'sticky', top:0 }}>
+
+      <div style={{ padding:'20px 20px 18px', borderBottom:'1px solid #EBEBEB' }}>
+        <Link href="/" style={{ display:'flex', alignItems:'center', gap:8, textDecoration:'none', marginBottom: orgName ? 4 : 0 }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
             <path d="M12 2C10.5 5.5 7 7 4 7c0 6 3.5 11 8 13 4.5-2 8-7 8-13-3 0-6.5-1.5-8-5z" fill="#E8820C"/>
           </svg>
-          <span style={{ fontWeight:700, fontSize:15, color:'#0A0A0A', letterSpacing:'-0.02em' }}>Honeybee</span>
+          <span style={{ fontWeight:700, fontSize:14, color:'#0A0A0A', letterSpacing:'-0.02em' }}>Honeybee</span>
         </Link>
-        <div style={{ fontSize:12, color:'#6B7280', paddingLeft:28, lineHeight:1.3 }}>{orgName}</div>
+        {orgName && <div style={{ fontSize:12, color:'#6B7280', paddingLeft:28, lineHeight:1.3 }}>{orgName}</div>}
       </div>
-      <nav style={{ flex:1, padding:'8px' }}>
-        {navItems.map(({ label, href, active, badge }) => (
+
+      <nav style={{ flex:1, padding:'8px 12px' }}>
+        {navItems.map(({ label, href, icon, active, badge }) => (
           <Link key={label} href={href} style={{ textDecoration:'none' }}>
-            <div style={{ display:'flex', alignItems:'center', padding:'8px 12px', paddingLeft: active ? '10px' : '12px', borderRadius:6, marginBottom:2, color: active ? '#0A0A0A' : '#6B7280', fontSize:14, fontWeight: active ? 500 : 400, cursor:'pointer', borderLeft: active ? '2px solid #E8820C' : '2px solid transparent', transition:'color 0.15s ease-out' }}>
+            <div
+              onMouseEnter={() => setHoveredNav(label)}
+              onMouseLeave={() => setHoveredNav(null)}
+              style={{
+                display:'flex',
+                alignItems:'center',
+                gap:10,
+                padding:'10px 16px',
+                paddingLeft: active ? '14px' : '16px',
+                borderRadius:8,
+                marginBottom:2,
+                color: active ? '#0A0A0A' : '#6B7280',
+                fontSize:14,
+                fontWeight: active ? 500 : 400,
+                cursor:'pointer',
+                borderLeft: active ? '2px solid #E8820C' : '2px solid transparent',
+                background: !active && hoveredNav === label ? '#F4F4F5' : 'transparent',
+                transition:'background 0.15s ease-out',
+              }}
+            >
+              <NavIcon name={icon} color={active ? '#0A0A0A' : '#9CA3AF'} />
               <span style={{ flex:1 }}>{label}</span>
-              {badge && <span style={{ fontSize:10, background:'#E8820C', color:'white', borderRadius:4, padding:'2px 6px', fontWeight:600 }}>{badge}</span>}
+              {badge && (
+                <span style={{ fontSize:10, background:'#F4F4F5', color:'#3F3F46', borderRadius:4, padding:'2px 6px', fontWeight:600 }}>
+                  {badge}
+                </span>
+              )}
             </div>
           </Link>
         ))}
       </nav>
+
       <div style={{ padding:'16px', borderTop:'1px solid #EBEBEB', display:'flex', alignItems:'center', gap:10 }}>
         <div style={{ width:28, height:28, borderRadius:'50%', background:'#0A0A0A', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:600, color:'white', flexShrink:0 }}>
           {initials}
@@ -63,7 +104,7 @@ function Sidebar({ user, orgName }: { user: any; orgName: string }) {
         <button
           onClick={() => supabase.auth.signOut().then(() => router.replace('/auth'))}
           title="Sign out"
-          style={{ background:'none', border:'none', color:'#6B7280', cursor:'pointer', fontSize:14, padding:'4px', flexShrink:0, lineHeight:1, fontFamily:'inherit' }}
+          style={{ background:'none', border:'none', color:'#9CA3AF', cursor:'pointer', fontSize:14, padding:'4px', flexShrink:0, lineHeight:1, fontFamily:'inherit' }}
         >↪</button>
       </div>
     </aside>
@@ -141,139 +182,156 @@ export default function ClinicDashboard() {
     <div style={{ display:'flex', minHeight:'100vh', background:'#FFFFFF' }}>
       <Sidebar user={user} orgName={orgName || 'Your Clinic'} />
 
-      <div style={{ flex:1, display:'flex', flexDirection:'column', minWidth:0 }}>
+      <main style={{ flex:1, padding:'40px 48px', overflow:'auto', minWidth:0 }}>
 
-        <header style={{ background:'#FFFFFF', borderBottom:'1px solid #EBEBEB', padding:'0 28px', height:56, display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+        {/* Page title row */}
+        <div className="fade-up" style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:32 }}>
           <div>
-            <h1 style={{ fontSize:16, fontWeight:700, letterSpacing:'-0.02em', color:'#0A0A0A' }}>Dashboard</h1>
-            {orgName && <div style={{ fontSize:12, color:'#6B7280', marginTop:1 }}>{orgName}</div>}
+            <h1 style={{ fontSize:24, fontWeight:600, letterSpacing:'-0.02em', color:'#0A0A0A', marginBottom: orgName ? 4 : 0 }}>Dashboard</h1>
+            {orgName && <p style={{ fontSize:14, color:'#6B7280' }}>{orgName}</p>}
           </div>
-          <div style={{ display:'flex', gap:10 }}>
-            <Link href="/scan" style={{ display:'flex', alignItems:'center', gap:7, background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, padding:'8px 14px', fontSize:13, color:'#6B7280', textDecoration:'none', fontWeight:500, transition:'border-color 0.15s ease-out' }}>
+          <div style={{ display:'flex', gap:10, marginTop:2 }}>
+            <Link
+              href="/scan"
+              style={{ display:'inline-flex', alignItems:'center', gap:7, background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, padding:'9px 16px', fontSize:13, color:'#6B7280', textDecoration:'none', fontWeight:500, transition:'border-color 0.15s ease-out' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#9CA3AF' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#EBEBEB' }}
+            >
               Scan Chip
             </Link>
-            <button style={{ display:'flex', alignItems:'center', gap:7, background:'#E8820C', color:'white', border:'none', borderRadius:8, padding:'8px 16px', fontSize:13, fontWeight:600, cursor:'pointer', transition:'background 0.15s ease-out' }}
+            <button
+              className="btn-primary"
+              style={{ padding:'9px 16px', height:'auto', fontSize:13 }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#D4750B' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#E8820C' }}
             >
               + Register Chip
             </button>
           </div>
-        </header>
+        </div>
 
-        <main style={{ flex:1, padding:'24px 28px', overflow:'auto' }}>
+        {/* Stats row */}
+        <div className="fade-up delay-1" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:14, marginBottom:32 }}>
+          {stats.map(({ label, value }) => (
+            <div key={label} style={{ background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', padding:'24px' }}>
+              <div style={{ fontSize:11, fontWeight:600, color:'#6B7280', textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:12 }}>{label}</div>
+              <div style={{ fontSize:32, fontWeight:600, letterSpacing:'-0.03em', color:'#0A0A0A', lineHeight:1 }}>{value}</div>
+            </div>
+          ))}
+        </div>
 
-          {/* Stats row */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:14, marginBottom:24 }}>
-            {stats.map(({ label, value }) => (
-              <div key={label} style={{ background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', padding:'18px 20px' }}>
-                <div style={{ fontSize:11, fontWeight:600, color:'#6B7280', textTransform:'uppercase', letterSpacing:'0.05em', marginBottom:12 }}>{label}</div>
-                <div style={{ fontSize:32, fontWeight:700, letterSpacing:'-0.03em', color:'#0A0A0A', lineHeight:1 }}>{value}</div>
+        <div className="fade-up delay-2" style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:20 }}>
+
+          {/* Patients table */}
+          <div style={{ background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', overflow:'hidden' }}>
+            <div style={{ padding:'16px 20px', borderBottom:'1px solid #EBEBEB', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <h2 style={{ fontSize:14, fontWeight:600, color:'#0A0A0A' }}>Patients</h2>
+              <span style={{ fontSize:13, color:'#6B7280' }}>{patients.length} total</span>
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'1.8fr 1.2fr 1.5fr 1fr 0.7fr', padding:'10px 20px', borderBottom:'1px solid #EBEBEB', background:'#FAFAFA' }}>
+              {['Patient', 'Owner', 'Chip #', 'Last Visit', 'Records'].map(h => (
+                <div key={h} style={{ fontSize:11, fontWeight:600, color:'#6B7280', textTransform:'uppercase', letterSpacing:'0.05em' }}>{h}</div>
+              ))}
+            </div>
+
+            {patients.length === 0 ? (
+              <div style={{ padding:'48px 20px', textAlign:'center', color:'#6B7280', fontSize:14 }}>
+                No patients registered yet
+              </div>
+            ) : patients.map((p: any, i: number) => (
+              <div
+                key={p.pet_id}
+                style={{ display:'grid', gridTemplateColumns:'1.8fr 1.2fr 1.5fr 1fr 0.7fr', padding:'13px 20px', alignItems:'center', borderBottom: i < patients.length - 1 ? '1px solid #EBEBEB' : 'none', cursor:'pointer', background: i % 2 === 1 ? '#FAFAFA' : '#FFFFFF', transition:'background 0.15s ease-out' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#FAFAFA' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = i % 2 === 1 ? '#FAFAFA' : '#FFFFFF' }}
+              >
+                <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                  <div style={{ width:32, height:32, borderRadius:8, background:'#F4F4F5', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, flexShrink:0, color:'#6B7280', fontWeight:600 }}>
+                    {(speciesLabel[p.species] || 'Pet')[0]}
+                  </div>
+                  <div>
+                    <div style={{ fontSize:14, fontWeight:600, color:'#0A0A0A' }}>{p.pet_name}</div>
+                    <div style={{ fontSize:12, color:'#6B7280', marginTop:1 }}>{p.breed || p.species}</div>
+                  </div>
+                </div>
+                <div style={{ fontSize:13, color:'#0A0A0A' }}>{p.owner_name || '—'}</div>
+                <div style={{ fontFamily:"'SF Mono', 'Fira Code', monospace", fontSize:12, color:'#6B7280', letterSpacing:'0.04em', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+                  {p.chip_number
+                    ? p.chip_number.replace(/(\d{3})(\d{4})(\d{4})(\d{4})/, '$1 $2 $3 $4')
+                    : '—'}
+                </div>
+                <div style={{ fontSize:13, color:'#6B7280' }}>{fmtDate(p.last_visit_date)}</div>
+                <div>
+                  <span style={{ background:'#F4F4F5', color:'#3F3F46', borderRadius:6, padding:'3px 8px', fontSize:12, fontWeight:500 }}>
+                    {p.record_count ?? 0}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:20 }}>
+          {/* Right column */}
+          <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
 
-            {/* Patients table */}
+            {/* Recent activity */}
             <div style={{ background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', overflow:'hidden' }}>
-              <div style={{ padding:'16px 20px', borderBottom:'1px solid #EBEBEB', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                <h2 style={{ fontSize:15, fontWeight:700, color:'#0A0A0A' }}>Patients</h2>
-                <span style={{ fontSize:13, color:'#6B7280' }}>{patients.length} total</span>
+              <div style={{ padding:'16px 18px', borderBottom:'1px solid #EBEBEB' }}>
+                <h3 style={{ fontSize:14, fontWeight:600, color:'#0A0A0A' }}>Recent Activity</h3>
               </div>
-
-              <div style={{ display:'grid', gridTemplateColumns:'1.8fr 1.2fr 1.5fr 1fr 0.7fr', padding:'10px 20px', borderBottom:'1px solid #EBEBEB', background:'#FAFAFA' }}>
-                {['Patient', 'Owner', 'Chip #', 'Last Visit', 'Records'].map(h => (
-                  <div key={h} style={{ fontSize:11, fontWeight:600, color:'#6B7280', textTransform:'uppercase', letterSpacing:'0.05em' }}>{h}</div>
-                ))}
-              </div>
-
-              {patients.length === 0 ? (
-                <div style={{ padding:'48px 20px', textAlign:'center', color:'#6B7280', fontSize:14 }}>
-                  No patients registered yet
-                </div>
-              ) : patients.map((p: any, i: number) => (
-                <div
-                  key={p.pet_id}
-                  style={{ display:'grid', gridTemplateColumns:'1.8fr 1.2fr 1.5fr 1fr 0.7fr', padding:'13px 20px', alignItems:'center', borderBottom: i < patients.length - 1 ? '1px solid #EBEBEB' : 'none', cursor:'pointer', background: i % 2 === 1 ? '#FAFAFA' : '#FFFFFF', transition:'background 0.15s ease-out' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#FAFAFA' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = i % 2 === 1 ? '#FAFAFA' : '#FFFFFF' }}
-                >
-                  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                    <div style={{ width:32, height:32, borderRadius:8, background:'#F4F4F5', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, flexShrink:0, color:'#6B7280', fontWeight:600 }}>
-                      {(speciesLabel[p.species] || 'Pet')[0]}
-                    </div>
-                    <div>
-                      <div style={{ fontSize:14, fontWeight:600, color:'#0A0A0A' }}>{p.pet_name}</div>
-                      <div style={{ fontSize:12, color:'#6B7280', marginTop:1 }}>{p.breed || p.species}</div>
-                    </div>
-                  </div>
-                  <div style={{ fontSize:13, color:'#0A0A0A' }}>{p.owner_name || '—'}</div>
-                  <div style={{ fontFamily:"'SF Mono', 'Fira Code', monospace", fontSize:12, color:'#6B7280', letterSpacing:'0.04em', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
-                    {p.chip_number
-                      ? p.chip_number.replace(/(\d{3})(\d{4})(\d{4})(\d{4})/, '$1 $2 $3 $4')
-                      : '—'}
-                  </div>
-                  <div style={{ fontSize:13, color:'#6B7280' }}>{fmtDate(p.last_visit_date)}</div>
-                  <div>
-                    <span style={{ background:'#F4F4F5', color:'#3F3F46', borderRadius:6, padding:'3px 8px', fontSize:12, fontWeight:500 }}>
-                      {p.record_count ?? 0}
+              {activity.length === 0 ? (
+                <div style={{ padding:'20px 18px', fontSize:13, color:'#6B7280' }}>No recent activity</div>
+              ) : activity.map((a: any, i: number) => {
+                const typeLabel = activityTypeLabel[a.activity_type] ?? a.activity_type
+                return (
+                  <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'11px 18px', borderBottom: i < activity.length - 1 ? '1px solid #EBEBEB' : 'none' }}>
+                    <span style={{ fontSize:10, fontWeight:600, background:'#F4F4F5', color:'#3F3F46', borderRadius:4, padding:'3px 7px', flexShrink:0, marginTop:2, letterSpacing:'0.02em' }}>
+                      {typeLabel}
                     </span>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontSize:13, fontWeight:500, color:'#0A0A0A', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                        {a.pet_name} — {a.description}
+                      </div>
+                      <div style={{ fontSize:11, color:'#6B7280', marginTop:2 }}>{fmtDT(a.activity_date)}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
-            {/* Right column */}
-            <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
-
-              {/* Recent activity */}
-              <div style={{ background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', overflow:'hidden' }}>
-                <div style={{ padding:'16px 18px', borderBottom:'1px solid #EBEBEB' }}>
-                  <h3 style={{ fontSize:15, fontWeight:700, color:'#0A0A0A' }}>Recent Activity</h3>
-                </div>
-                {activity.length === 0 ? (
-                  <div style={{ padding:'20px 18px', fontSize:13, color:'#6B7280' }}>No recent activity</div>
-                ) : activity.map((a: any, i: number) => {
-                  const typeLabel = activityTypeLabel[a.activity_type] ?? a.activity_type
-                  return (
-                    <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'11px 18px', borderBottom: i < activity.length - 1 ? '1px solid #EBEBEB' : 'none' }}>
-                      <span style={{ fontSize:10, fontWeight:600, background:'#F4F4F5', color:'#3F3F46', borderRadius:4, padding:'3px 7px', flexShrink:0, marginTop:2, letterSpacing:'0.02em' }}>
-                        {typeLabel}
-                      </span>
-                      <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ fontSize:13, fontWeight:500, color:'#0A0A0A', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
-                          {a.pet_name} — {a.description}
-                        </div>
-                        <div style={{ fontSize:11, color:'#6B7280', marginTop:2 }}>{fmtDT(a.activity_date)}</div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Quick actions */}
-              <div style={{ background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', padding:18 }}>
-                <h3 style={{ fontSize:15, fontWeight:700, color:'#0A0A0A', marginBottom:12 }}>Quick Actions</h3>
-                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-                  <Link href="/scan" style={{ display:'flex', alignItems:'center', padding:'11px 14px', background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, textDecoration:'none', color:'#0A0A0A', fontSize:14, fontWeight:500, transition:'border-color 0.15s ease-out' }}>
-                    Scan a Chip
-                  </Link>
-                  <Link href="/clinic/integrations" style={{ display:'flex', alignItems:'center', padding:'11px 14px', background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, textDecoration:'none', color:'#0A0A0A', fontSize:14, fontWeight:500, transition:'border-color 0.15s ease-out' }}>
-                    PIMS Integrations
-                  </Link>
-                  <button style={{ display:'flex', alignItems:'center', padding:'11px 14px', background:'#E8820C', border:'none', borderRadius:8, color:'white', fontSize:14, fontWeight:600, cursor:'pointer', width:'100%', textAlign:'left', transition:'background 0.15s ease-out' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#D4750B' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#E8820C' }}
-                  >
-                    AI Medical Summary
-                  </button>
-                </div>
+            {/* Quick actions */}
+            <div style={{ background:'#FFFFFF', borderRadius:8, border:'1px solid #EBEBEB', padding:'18px' }}>
+              <h3 style={{ fontSize:14, fontWeight:600, color:'#0A0A0A', marginBottom:12 }}>Quick Actions</h3>
+              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                <Link
+                  href="/scan"
+                  style={{ display:'flex', alignItems:'center', padding:'11px 14px', background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, textDecoration:'none', color:'#0A0A0A', fontSize:14, fontWeight:500, transition:'border-color 0.15s ease-out' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#9CA3AF' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#EBEBEB' }}
+                >
+                  Scan a Chip
+                </Link>
+                <Link
+                  href="/clinic/integrations"
+                  style={{ display:'flex', alignItems:'center', padding:'11px 14px', background:'#FFFFFF', border:'1px solid #EBEBEB', borderRadius:8, textDecoration:'none', color:'#0A0A0A', fontSize:14, fontWeight:500, transition:'border-color 0.15s ease-out' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#9CA3AF' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#EBEBEB' }}
+                >
+                  PIMS Integrations
+                </Link>
+                <button
+                  className="btn-primary"
+                  style={{ width:'100%', textAlign:'left', justifyContent:'flex-start', padding:'11px 14px', height:'auto', fontSize:14 }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#D4750B' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#E8820C' }}
+                >
+                  AI Medical Summary
+                </button>
               </div>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   )
 }
