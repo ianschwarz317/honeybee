@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth-context'
+import { ClinicSidebar } from './_components/sidebar'
 
 function fmtDate(d: string | null) {
   if (!d) return '—'
@@ -39,67 +40,6 @@ function petEmoji(species: string) {
   if (species === 'cat') return '🐈'
   if (species === 'dog') return '🐕'
   return '🐾'
-}
-
-function Sidebar({ user, orgName }: { user: any; orgName: string }) {
-  const router = useRouter()
-  const [hovered, setHovered] = useState<string | null>(null)
-  const initials = (user?.full_name || 'SC').split(' ').map((n: string) => n[0]).join('').toUpperCase()
-  const roleLabel = user?.role === 'clinic_admin' ? 'Clinic Admin' : 'Staff'
-  const nav = [
-    { label:'Dashboard',         href:'/clinic',              icon:'grid',     active:true,  badge:undefined },
-    { label:'Patients',          href:'/clinic',              icon:'users',    active:false, badge:undefined },
-    { label:'Records',           href:'/clinic',              icon:'file',     active:false, badge:undefined },
-    { label:'Chip Registration', href:'/clinic',              icon:'chip',     active:false, badge:undefined },
-    { label:'AI Summaries',      href:'/clinic',              icon:'star',     active:false, badge:undefined },
-    { label:'PIMS Integrations', href:'/clinic/integrations', icon:'link',     active:false, badge:'New'     },
-    { label:'Reports',           href:'/clinic',              icon:'bar',      active:false, badge:undefined },
-    { label:'Settings',          href:'/clinic',              icon:'settings', active:false, badge:undefined },
-  ]
-  return (
-    <aside style={{ width:240, flexShrink:0, background:'#FFFFFF', borderRight:'1px solid #EBEBEB', display:'flex', flexDirection:'column', minHeight:'100vh', position:'sticky', top:0 }}>
-      <div style={{ padding:'20px 16px 18px', borderBottom:'1px solid #EBEBEB' }}>
-        <Link href="/" style={{ display:'flex', alignItems:'center', gap:8, textDecoration:'none', marginBottom: orgName ? 6 : 0 }}>
-          <span style={{ fontSize:20, lineHeight:1 }}>🐝</span>
-          <span style={{ fontWeight:700, fontSize:15, color:'#E8820C', letterSpacing:'-0.02em' }}>honeybee</span>
-        </Link>
-        {orgName && <div style={{ fontSize:12, color:'#9CA3AF', paddingLeft:28, lineHeight:1.3 }}>{orgName}</div>}
-      </div>
-      <nav style={{ flex:1, padding:'4px 10px' }}>
-        {nav.map(({ label, href, icon, active, badge }) => {
-          const isHovered = hovered === label
-          const iconColor = active ? '#E8820C' : isHovered ? '#0A0A0A' : '#9CA3AF'
-          return (
-            <Link key={label} href={href} style={{ textDecoration:'none' }}>
-              <div
-                onMouseEnter={() => setHovered(label)}
-                onMouseLeave={() => setHovered(null)}
-                style={{
-                  display:'flex', alignItems:'center', gap:10,
-                  padding:'10px 14px', borderRadius:10, marginBottom:2,
-                  color: active ? '#E8820C' : isHovered ? '#0A0A0A' : '#6B7280',
-                  fontSize:14, fontWeight: active ? 500 : 400, cursor:'pointer',
-                  background: active ? '#FEF3E2' : isHovered ? '#F4F4F5' : 'transparent',
-                  transition:'background 0.15s ease-out, color 0.15s ease-out',
-                }}>
-                <NavIcon name={icon} color={iconColor} />
-                <span style={{ flex:1 }}>{label}</span>
-                {badge && <span style={{ fontSize:10, background:'#F4F4F5', color:'#6B7280', borderRadius:999, padding:'2px 7px', fontWeight:600 }}>{badge}</span>}
-              </div>
-            </Link>
-          )
-        })}
-      </nav>
-      <div style={{ padding:'14px 16px', borderTop:'1px solid #EBEBEB', display:'flex', alignItems:'center', gap:10 }}>
-        <div style={{ width:32, height:32, borderRadius:'50%', background:'#0A0A0A', display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, fontWeight:600, color:'white', flexShrink:0 }}>{initials}</div>
-        <div style={{ flex:1, minWidth:0 }}>
-          <div style={{ fontSize:13, fontWeight:500, color:'#0A0A0A', lineHeight:1.2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{user?.full_name || 'Dr. Sarah Chen'}</div>
-          <div style={{ fontSize:11, color:'#9CA3AF' }}>{roleLabel}</div>
-        </div>
-        <button onClick={() => supabase.auth.signOut().then(() => router.replace('/auth'))} title="Sign out" style={{ background:'none', border:'none', color:'#9CA3AF', cursor:'pointer', fontSize:14, padding:'4px', flexShrink:0, lineHeight:1, fontFamily:'inherit' }}>↪</button>
-      </div>
-    </aside>
-  )
 }
 
 type ClinicTab = 'patients' | 'activity'
@@ -208,7 +148,7 @@ export default function ClinicDashboard() {
 
   return (
     <div style={{ display:'flex', minHeight:'100vh', background:'#FFFFFF' }}>
-      <Sidebar user={user} orgName={orgName || 'Your Clinic'} />
+      <ClinicSidebar user={user} orgName={orgName || 'Your Clinic'} />
 
       <main style={{ flex:1, padding:'40px 48px', overflow:'auto', minWidth:0 }}>
 
